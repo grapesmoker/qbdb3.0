@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+<!-- {% block sidebar %}
+{% include "sidebar.html" %}
+{% endblock %}-->
+
+{% block content %}
+
+<div class="row">
+  <div class="col-md-12">
+    <h1 class="text-center">
+      QBDB v3.0
+    </h1>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12 text-center">
+    <div class="btn-group">
+      <a href="#browse">
+        <button type="button" class="btn btn-primary" id="browse">Browse the DB</button>
+      </a>
+    </div>
+    <div class="btn-group">
+      <a href="#search">
+        <button type="button" class="btn btn-primary" id="search">Search the DB</button>
+      </a>
+    </div>
+    <div class="btn-group">
+      <a href="#read">
+        <button type="button" class="btn btn-primary" id="read">Read me some questions</button>
+      </a>
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}

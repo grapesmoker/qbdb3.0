@@ -1,0 +1,26 @@
+{% load staticfiles %}
+
+<html>
+<head>
+  <title>{% block title %}{% endblock %}</title>
+
+  <link rel="stylesheet" href="{% static 'bootstrap/dist/css/bootstrap.css' %}">
+  <link rel="stylesheet" href="{% static 'jquery-ui/themes/ui-lightness/jquery-ui.css' %}">
+  
+  <script language="javascript" type="text/javascript" src="{% static 'jquery/dist/jquery.js' %}"></script>
+  <script language="javascript" type="text/javascript" src="{% static 'jquery-ui/jquery-ui.js' %}"></script>
+  <script language="javascript" type="text/javascript" src="{% static 'bootstrap/dist/js/bootstrap.js' %}"></script>
+  <script language="javascript" type="text/javascript" src="{% static 'underscore/underscore.js' %}"></script>
+
+</head>
+
+<body>
+  <div class="container-fluid">
+    <div class="row">
+
+      <div class="col-md-12">
+        {% block content %}{% endblock %}
+      </div>
+    </div>
+  </div>
+</body>
