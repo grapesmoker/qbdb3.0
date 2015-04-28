@@ -68,23 +68,14 @@ def add_tournament(request):
             new_bonus.leadin = bonus['leadin']
             new_bonus.leadin_sanitized = bonus['leadin_sanitized']
             bonus_data = zip(bonus['parts'], bonus['answers'], bonus['values'], bonus['parts_sanitized'], bonus['answers_sanitized'])
-            for i, bpart in enumerate(bonus_data):
-                part, answer, value, part_sanitized, answer_sanitized = bpart
-                #print bpart
-                # fields = [('text', part),
-                #           ('answer', answer),
-                #           ('value'), value),
-                #           ('text_sanitized', part_sanitized),
-                #           ('answer_sanitized', answer_sanitized)]
+            for i, bpart in enumerate(bonus_data, start=1):
                 fields = ['text', 'answer', 'value', 'text_sanitized', 'answer_sanitized']
                 fields_and_values = zip(fields, bpart)
-                #
                 for f in fields_and_values:
                     bonus_field = 'part{0}_{1}'.format(i, f[0])
-                    print bonus_field
-                    #setattr(new_bonus, bonus_field) = f[1]
+                    setattr(new_bonus, bonus_field, f[1])
 
-            # new_bonus.save()
+            new_bonus.save()
 
     #return HttpResponse(json.dumps({}), content_type='application/json')
     return HttpResponse('ok')
