@@ -11,5 +11,7 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', main),
     url(r'^add_tournament/$', add_tournament),
-    url(r'^test/$', test)
+    url(r'^tournaments/$', tournaments),
+    url(r'^tournament/(?P<id>[\d]+)$', get_tournament),
+    url(r'^packet/(?P<id>[\d]+)$', get_packet)
 ]
