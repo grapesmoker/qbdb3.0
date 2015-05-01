@@ -1,0 +1,25 @@
+<div class='col-md-offset-2 col-md-8'>
+  <table class='table table-striped table-hover text-center'>
+    <!--<caption class='text-center'>Tournaments</caption>-->
+    <thead>
+      <tr>
+        <td>Year</td>
+        <td>Tournament</td>
+        <td>Quality</td>
+        <td>Difficulty</td>
+      </tr>
+    </thead>
+    <tbody>
+      <% _.each(tournaments, function(tournament) { %>
+        <td><%= tournament.tournament_year %></td>
+        <td>
+          <a href="#/tournament/<%= tournament.id %>">
+            <%= tournament.tournament_name %>
+          </a>
+        </td>
+        <td><%= tournament.id %></td>
+        <td>&nbsp;</td>
+      <% }); %>
+    </tbody>
+  </table>
+</div>

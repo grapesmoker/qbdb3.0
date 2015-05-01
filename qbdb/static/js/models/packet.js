@@ -1,14 +1,18 @@
 define(['backbone', 'jquery', 'underscore'],
   function(Backbone, $, _) {
-    var Tossup = Backbone.Model.extend({
+    var Packet = Backbone.Model.extend({
       initialize: function() {
 
       },
+
       defaults: {
 
-      }
+      },
+
+      urlRoot: '/packet'
+
     });
 
-    return Tossup;
+    return Packet;
   }
 );

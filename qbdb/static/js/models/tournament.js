@@ -1,14 +1,18 @@
 define(['backbone', 'jquery', 'underscore'],
   function(Backbone, $, _) {
-    var Tossup = Backbone.Model.extend({
+    var Tournament = Backbone.Model.extend({
       initialize: function() {
 
       },
+
       defaults: {
 
-      }
+      },
+
+      urlRoot: '/tournament'
+
     });
 
-    return Tossup;
+    return Tournament;
   }
 );

@@ -2,16 +2,20 @@ define(['backbone',
         'jquery',
         'underscore',
         'models/tossup',
-        'text!templates/tossup.html'],
-function(Backbone, $, _, TossupModel, tossupTemplate) {
+        'text!templates/tossup.html',
+        'text!templates/tossup_as_row.html'],
+function(Backbone, $, _, TossupModel, tossupTemplate, tuAsRowTemplate) {
 
   var TossupView = Backbone.View.extend({
 
-    tagName: 'div',
+    tagName: 'tr',
 
     initialize: function() {
-      console.log('init TossupView')
-      this.render()
+      //this.render()
+      /*if !(_.isUndefined(options.viewType)) {
+        this.viewType = options.viewType
+        console.log('view type: ', this.viewType)
+      }*/
     },
 
     events: {
@@ -19,19 +23,8 @@ function(Backbone, $, _, TossupModel, tossupTemplate) {
     },
 
     render: function() {
-      console.log('render TossupView')
-
-      console.log(this.model.tossup_text)
-      console.log(this.model.answer)
-
-      this.template = _.template(tossupTemplate,
-        {tossup_text: this.model.tossup_text,
-         answer: this.model.answer});
-
-      console.log(this.template)
-      console.log(this.el)
-
-      this.$el.html(this.template);
+      this.template = _.template(tuAsRowTemplate)
+      this.$el.html(this.template(this.model.toJSON()));
 
       return this;
     }

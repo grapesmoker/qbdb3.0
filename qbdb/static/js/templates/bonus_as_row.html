@@ -1,0 +1,19 @@
+<td>
+  <a href='#/bonus/<%= id %>'>
+    <%= number %>
+  </a>
+</td>
+<td>
+  <p class='text-justify'>
+    <%= leadin %><br>
+    <% _.each(_.zip(values, parts, answers), function(bpart) {
+        if (bpart[0] > 0) { %>
+          [<%= bpart[0] %>] <%= bpart[1] %><br>ANSWER: <%= bpart[2] %><br>
+      <% } %>
+
+    <% }) %>
+  </p>
+</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>

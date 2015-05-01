@@ -16,6 +16,7 @@ require.config({
     tossupModel: './models/tossup',
     tossupCollection: './collections/tossups',
     tossupCollectionView: './views/tossups',
+    qbdbRouter: './routers/qbdb',
     text: '../text/text'
   }
 });
@@ -27,18 +28,19 @@ require([
   'tossupView',
   'tossupModel',
   'tossupCollection',
-  'tossupCollectionView'
+  'tossupCollectionView',
+  'qbdbRouter'
 ], function(Backbone, $, _, TossupView, Tossup,
-            TossupCollection, TossupCollectionView) {
+            TossupCollection, TossupCollectionView, QBDBRouter) {
   $(function() {
 
     console.log('init');
-    console.log(Tossup);
 
-    var tu = new Tossup;
+    /*var tu = new Tossup;
     var tu_collection = new TossupCollection;
     tu_collection.add(tu)
-    var tu_coll_view = new TossupCollectionView(tu_collection);
+    var tu_coll_view = new TossupCollectionView(tu_collection);*/
+    var qbdbRouter = new QBDBRouter;
 
   })
 })

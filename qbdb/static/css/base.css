@@ -3,3 +3,8 @@
   margin-left: auto;
   margin-right: auto;
 }
+
+req {
+  font-weight: bold;
+  text-decoration: underline;
+}

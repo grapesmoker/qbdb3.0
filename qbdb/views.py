@@ -67,6 +67,7 @@ def add_tournament(request):
             new_bonus.tournament = new_tour
             new_bonus.leadin = bonus['leadin']
             new_bonus.leadin_sanitized = bonus['leadin_sanitized']
+            new_bonus.number = int(bonus['number'])
             bonus_data = zip(bonus['parts'], bonus['answers'], bonus['values'], bonus['parts_sanitized'], bonus['answers_sanitized'])
             for i, bpart in enumerate(bonus_data, start=1):
                 fields = ['text', 'answer', 'value', 'text_sanitized', 'answer_sanitized']
@@ -80,6 +81,44 @@ def add_tournament(request):
     #return HttpResponse(json.dumps({}), content_type='application/json')
     return HttpResponse('ok')
 
-def test(request):
 
-    return HttpResponse('this is a test')
+@csrf_exempt
+def tournaments(request):
+
+    if request.method == 'GET':
+        all_tournaments = Tournament.objects.all()
+
+        json_data = json.dumps([t.to_dict() for t in all_tournaments])
+
+        return HttpResponse(json_data, content_type='application/json')
+
+
+@csrf_exempt
+def get_tournament(request, id):
+
+    if request.method == 'GET':
+        try:
+            tournament = Tournament.objects.get(id=id)
+        except Exception as ex:
+            print ex
+            return HttpResponse(json.dumps({'error': 'Tournament not found'}))
+
+        packets = tournament.packet_set.all()
+
+        #data = {'tournament': tournament.to_dict(with_packets=True)}
+
+        return HttpResponse(tournament.to_json(with_packets=True),
+                            content_type='application/json')
+
+@csrf_exempt
+def get_packet(request, id):
+
+    if request.method == 'GET':
+        try:
+            packet = Packet.objects.get(id=id)
+        except Exception as ex:
+            print ex
+            return HttpResponse(json.dumps({'error': 'Packet not found'}))
+
+        return HttpResponse(packet.to_json(with_questions=True),
+                            content_type='application/json')

@@ -7,30 +7,30 @@ define(
  function(Backbone, $, _, TossupView, TossupCollection) {
 
    var TossupCollectionView = Backbone.View.extend({
-     el: '#qbdb-contents',
+     //el: '.tossup-contents',
 
-     initialize: function(collection) {
-       this.collection = collection;
+     initialize: function() {
+       //this.collection = collection;
        this.render();
        this.collection.on('reset', this.render, this);
+       /*if (_.isUndefined(options.viewType)) {
+         this.viewType = options.viewType
+       } else { this.viewType  = 'asDiv'}*/
      },
- 
+
      render: function() {
-       console.log('rendering tossup collection')
-       console.log(this.$el)
        this.$el.html('');
-       console.log('foobarbaz')
+       console.log(this.$el)
+       console.log(this.collection)
        this.collection.each(function(tossup) {
-         console.log('collection: ', this.collection)
          this.renderTossup(tossup);
        }, this);
      },
 
      renderTossup: function(tossup) {
-       console.log('tossup: ', tossup)
        var tossupView = new TossupView({model: tossup});
-
-       this.$el.append(tossupView.render().el);
+       tossupEl = tossupView.render().el
+       this.$el.append(tossupEl);
      }
    });
 
