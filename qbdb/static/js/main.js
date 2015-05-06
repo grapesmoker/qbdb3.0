@@ -18,7 +18,7 @@ require.config({
     tossupCollection: './collections/tossups',
     tossupCollectionView: './views/tossups',
     qbdbRouter: './routers/qbdb',
-    text: '../text/text'
+    text: '../requirejs-text/text'
   }
 });
 
