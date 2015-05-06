@@ -21,7 +21,9 @@ class Tossup(models.Model):
                 'number': self.number,
                 'id': self.id,
                 'packet_name': self.packet.author,
-                'packet_id': self.packet.id}
+                'packet_id': self.packet.id,
+                'tournament': self.tournament.tournament_name,
+                'tournament_id': self.tournament.id}
 
     def to_json(self):
 
@@ -79,6 +81,8 @@ class Bonus(models.Model):
                 'number': self.number,
                 'packet_name': self.packet.author,
                 'packet_id': self.packet.id,
+                'tournament': self.tournament.tournament_name,
+                'tournament_id': self.tournament.id,
                 'values': [],
                 'parts': [],
                 'answers': []}
