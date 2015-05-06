@@ -23,9 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 from local_settings import SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
-from local_settings import DEBUG, PRODUCTION
-
-ALLOWED_HOSTS = []
+from local_settings import DEBUG, PRODUCTION, ALLOWED_HOSTS
 
 
 # Application definition
