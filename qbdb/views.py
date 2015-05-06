@@ -8,7 +8,7 @@ from django.db.models import Q
 from qbdb.models import Tossup, Bonus, Packet, Tournament
 from haystack.query import SearchQuerySet
 
-from settings import PRODUCTION
+from django.conf import settings
 
 import os
 import json
@@ -27,7 +27,7 @@ def add_tournament(request):
     """
 
     # if we're in production, no adding allowed
-    if PRODUCTION:
+    if settings.PRODUCTION:
         return HttpResponseForbidden()
 
     tour_data = json.loads(request.body)
