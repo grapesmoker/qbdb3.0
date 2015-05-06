@@ -1,12 +1,14 @@
 from django.shortcuts import render, render_to_response
 from django.template import Context, RequestContext
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseForbidden
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Q
 
 from qbdb.models import Tossup, Bonus, Packet, Tournament
 from haystack.query import SearchQuerySet
+
+from settings import PRODUCTION
 
 import os
 import json
@@ -23,6 +25,11 @@ def add_tournament(request):
     Takes a JSON file representing an entire tournament and
     adds it to the database
     """
+
+    # if we're in production, no adding allowed
+    if PRODUCTION:
+        return HttpResponseForbidden()
+
     tour_data = json.loads(request.body)
     tour_year = tour_data['year']
     tour_name = tour_data['tournament']
