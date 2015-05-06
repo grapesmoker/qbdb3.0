@@ -9,6 +9,6 @@
     "bootstrap": "*",
     "fontawesome": "*",
     "requirejs": "*",
-    "requirejs-text": "*",
+    "requirejs-text": "*"
   }
 }
