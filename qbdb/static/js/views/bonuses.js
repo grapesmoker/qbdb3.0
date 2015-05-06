@@ -28,8 +28,6 @@ define(
      },
 
      renderBonus: function(bonus) {
-       console.log(BonusView)
-       console.log(bonus)
        var bonusView = new BonusView({model: bonus});
        bonusEl = bonusView.render().el
        this.$el.append(bonusEl);

@@ -19,7 +19,9 @@ class Tossup(models.Model):
         return {'tossup_text': self.tossup_text,
                 'answer': self.answer,
                 'number': self.number,
-                'id': self.id}
+                'id': self.id,
+                'packet_name': self.packet.author,
+                'packet_id': self.packet.id}
 
     def to_json(self):
 
@@ -75,6 +77,8 @@ class Bonus(models.Model):
         data = {'leadin': self.leadin,
                 'id': self.id,
                 'number': self.number,
+                'packet_name': self.packet.author,
+                'packet_id': self.packet.id,
                 'values': [],
                 'parts': [],
                 'answers': []}
@@ -84,8 +88,6 @@ class Bonus(models.Model):
             for f in fields:
                 field = 'part{0}_{1}'.format(i, f[0])
                 data[f[1]].append(getattr(self, field))
-
-        print data
 
         return data
 

@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+
+{% block title %}
+Frequently Asked Questions
+{% endblock %}
+
+{% block header %}
+<div class='row'>
+  <div class='col-md-12'>
+    {% include "header.html" %}
+  </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class='row'>
+  <div class='col-md-12'>
+
+    <div class='hero'>
+      <h2>QBDB Frequently Asked Questions</h2>
+    </div>
+
+    <div class='alert alert-info'>
+      <h4>Q: What's all this then?</h4>
+        <p>A: This is the third iteration of the Quizbowl Database (QBDB), a web app for
+        browsing and searching quizbowl questions.</p>
+    </div>
+
+    <div class='alert alert-info'><h4>Q: What happened to versions 1 and 2?</h4>
+    <p>A: Version 1 was written in 2005 in PHP (yuck) with hand-coded SQL queries
+    (double-yuck). It worked well enough for what it was, but faced the problem
+    of getting questions into the database and was nearly impossible to extend.
+    Version 2 was an attempt to rework v1 in Node; I undertook it as a motivation
+    to learn Node, but abandoned it after I realized that I hated Node.</p></div>
+
+    <div class='alert alert-info'>
+    <h4>Q: What's the tech stack?</h4>
+    <p>A: QBDB v3 is built on top of <a href="http://djangoproject.com">Django</a>,
+      a mature web framework written in <a href="http://www.python.org">Python</a>.
+      Django serves as the backend and uses SQLite as the storage engine. Search is
+      made possible via <a href="http://haystacksearch.org">Haystack</a>
+      integration with <a href="http://lucene.apache.org/solr">Solr</a>, an open-source
+      search engine. The frontend is laid out using <a href="http://getbootstrap.com">
+      Bootstrap</a> and is built on top of <a href="http://backbonejs.org">Backbone</a>,
+      a lightweight MV* framework. Other goodies: <a href="http://underscorejs.org">
+        Underscore</a>, <a href="http://jquery.com">jQuery</a>, and
+        <a href="http://fontawesome.github.io">FontAwesome</a>.</p>
+    </div>
+
+    <div class='alert alert-info'>
+    <h4>Q: What can it do?</h4>
+    <p>A: QBDB allows you to browse and search questions; that is its main purpose.
+      Additional capabilities (such as the ability to have the interface "read"
+      questions to you) are in development. The interface is purposely minimal to
+      avoid trying to cram too many features into the application.</p>
+    </div>
+
+    <div class='alert alert-info'>
+    <h4>Q: How many tournaments are in the database?</h4>
+    <p>A: Right now, not that many. I'm working my way backwards from the present day,
+      since modern tournaments tend to be better about formatting. With the new packet
+      parser, the task of adding packets to the database is drastically simplified,
+      so eventually I hope to have all of the <a href="http://collegiate.quizbowlpackets.com">
+        HSQB archive</a> added.</p>
+      </div>
+
+    <div class='alert alert-info'>
+    <h4>Q: What kinds of question formats does it support?</h4>
+    <p>A: QBDB is intended primarily as an archive of college questions. Therefore,
+      it's entirely focused on tournaments written in the standard mACF/NAQT format,
+      i.e. tossups and three-part bonuses. There are no plans to extend the system to
+      support any exotic local formats, 4-quarter formats, or anything else.</p>
+    <p>As far as file formats, the parser is only capable of processing Microsoft
+      Word .docx files, and there is no plan to add support for any other file, except
+      possibly plain-text formats like Markdown.</p>
+    </div>
+
+    <div class='alert alert-info'>
+    <h4>Q: How are questions added to the database? Have you solved The Parsing Problem?</h4>
+    <p>A: Yes and no. In the past, I relied on a very poorly written parser that tried to
+      figure out what it was parsing by looking at what was around it. I realized that I
+      could implement a much more simple parser that just relied on a stack on which it would
+      push every line of a question. Once it encounters a line that is not an answer,
+      the parser pops the stack and tries to figure out what ended up on the stack. It's a
+      bit more complex than that, but not much more.</p>
+    <p>The advantage of this parser is that it has the ability to easily detect errors.
+      For example, if the parser encounters two lines marked "ANSWER:" it will throw an
+      error and tell you where it occurred. Basically any anomalous situation will be reported
+      to the user. This is very handy for debugging; when the packet is well-formed, usually
+      only a few errors pop up that are easy to fix, and a packet can be parsed and imported
+      in minutes. In worst-case scenarios, at least you'll more or less know where the problem is.</p>
+    <p>You can find the source of the parser on my <a href="http://github.com/grapesmoker/packet_parser">
+      Github</a> page.</p>
+    </div>
+
+    <div class='alert alert-info'>
+    <h4>Q: Can you add Feature X?</h4>
+    <p>A: Be the change you want to see in the world. Fork the <a href="http://github.com/grapesmoker/qbdb3.0">
+      QBDB Github repo</a>, add the feature you want, and then issue a pull request. Alternately,
+      you can <a href="mailto:grapesmoker@gmail.com">contact me</a>; I might even respond, but
+      I am under no obligation to do anything and your priorities may not be my priorities.</p>
+    </div>
+
+    <div class='alert alert-info'>
+    <h4>Q: Is there an API for the database?</h4>
+    <p>A: Informally, yes. Obviously the frontend Backbone requests are being handled by an
+      API-like structure within Django that returns the relevant data. For the modest needs
+      of this application I didn't see any need to go with a more heavyweight API architecture
+      like Tastypie or django-rest. The API isn't really documented but it should be obvious
+      from the code what the GET requests are.</p>
+    </div>
+
+    <div class='alert alert-info'>
+    <h4>Q: How can I help you add packets to the database?</h4>
+    <p>A: Clone the parser repository, and run the parser with two arguments: the -d option
+      is the directory in which the per-tournament packets in .docx format reside, and
+      the -o option should be set to "process". Read the packet_parser.py file to understand
+      the arguments.</p>
+    <p>In order to run the parser, you will need to install pandoc, a document-conversion tool.
+      You'll also need BeautifulSoup for HTML sanitizing. Before running the parser, make sure
+      all the files are in .docx format and get rid of any headings in the files, e.g. all
+      stuff like "ACF Regionals 2014, edited by Joe Schmoe, packet by Springfield Clown College."
+      Make sure there are no soft line breaks anywhere in the file; those will screw up parsing.
+      You can also delete section labels like "Tossups" and "Bonuses" although the parser
+      should just ignore those.</p>
+    <p>When you first run the parser, it will ask you for the name of the tournament,
+      the year, and the author of each packet. After you've entered that information once,
+      it will be stored in the directory of the tournament files in the file conf.json
+      and be read when you call the parser again. For rounds written by the editors, I always
+      just specify "Editors" followed by the number of the packet, e.g. "Editors 1", as is
+      the usual convention in titling packets in quizbowl. Some tournaments, e.g. housewrites
+      will wind up being all editor packets, and that's fine.</p>
+    <p>You will very likely now get a bunch of errors, in addition to a final report about
+      how many tossups and bonuses were extracted from each packet. Hopefully the errors make
+      sense. Fix the errors and re-run the parser; repeat until no errors are reported. Make
+      sure that the number of tossups and bonuses reported by the parser matches the number
+      in the file; sometimes, pathological situations can result in the parser swallowing
+      a tossup or bonus.</p>
+    <p>Assuming everything went well, the tournament directory will now contain a .json file
+      named by the convention "Year - Tournament Name.json", which contains a full
+      representation of the tournament. Send that file to <a href="mailto:grapesmoker@gmail.com">me</a>
+      and I will add it to the database.</p>
+    </div>
+
+    <div class='alert alert-info'>
+    <h4>Q: Is there any reason to sign up for an account?</h4>
+    <p>A: If you sign up for an account, you'll be allowed to rate questions, packets, and
+      tournaments by difficulty and quality. There may also be other future features that
+      will only be available to those with accounts. But most features of the site can be
+      used without ever signing up for an account.</p>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,14 +1,18 @@
 define(['backbone',
         'jquery',
+        'jqueryui',
         'underscore',
         'models/tournament',
         'views/tournament',
         'collections/tournaments',
         'views/tournaments',
         'models/packet',
-        'views/packet'],
-         function(Backbone, $, _, Tournament, TournamentView,
-           TournamentCollection, TournamentCollectionView, Packet, PacketView) {
+        'views/packet',
+        'views/search',
+        'text!templates/dialog.html'],
+         function(Backbone, $, $ui, _, Tournament, TournamentView,
+           TournamentCollection, TournamentCollectionView, Packet, PacketView,
+           SearchView, Dialog) {
 
           var QBDBRouter = Backbone.Router.extend({
             routes: {
@@ -25,25 +29,41 @@ define(['backbone',
             },
 
             search: function() {
-              console.log('search');
+              var el = $('#qbdb-contents')
+              el.html('')
+              var searchView = new SearchView({el: el})
+              searchView.render()
+              // el.html(searchView.render().el)
             },
 
             read: function() {
-              console.log('read');
+              var dialog = _.template(Dialog)({text: 'This feature is not available yet.',
+                                               title: 'Unimplemented feature.'})
+
+              $(dialog).dialog({
+                modal: true,
+                buttons: {
+                  Ok: function() {
+                    $(this).dialog('close')
+                  }
+                }
+              })
             },
 
             showTournament: function(id) {
-              console.log('here we load the tournament: ', id)
               var tournament = new Tournament;
               tournament.set('id', id)
               var tournamentView = new TournamentView({model: tournament});
             },
 
             showPacket: function(id) {
-              console.log('here we load the packet: ', id)
               var packet = new Packet;
               packet.set('id', id)
               var packetView = new PacketView({model: packet})
+            },
+
+            showTossup: function(id) {
+
             }
 
           });

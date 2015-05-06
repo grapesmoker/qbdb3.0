@@ -5,10 +5,11 @@ require.config({
     bootstrap: {
       deps: ['jquery'],
       exports: 'jquery'
-    }
+    },
   },
   paths: {
     jquery: '../jquery/dist/jquery',
+    jqueryui: '../jquery-ui/jquery-ui',
     backbone: '../backbone/backbone',
     underscore: '../underscore/underscore',
     bootstrap: '../bootstrap/dist/js/bootstrap',

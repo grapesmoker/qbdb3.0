@@ -1,0 +1,13 @@
+{{ object.leadin_sanitized }}
+{{ object.part1_text_sanitized }}
+{{ object.part1_answer_sanitized }}
+{{ object.part2_text_sanitized }}
+{{ object.part2_answer_sanitized }}
+{{ object.part3_text_sanitized }}
+{{ object.part3_answer_sanitized }}
+{{ object.part4_text_sanitized }}
+{{ object.part4_answer_sanitized }}
+{{ object.part5_text_sanitized }}
+{{ object.part5_answer_sanitized }}
+{{ object.part6_text_sanitized }}
+{{ object.part6_answer_sanitized }}

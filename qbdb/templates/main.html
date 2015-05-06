@@ -1,8 +1,16 @@
 {% extends "base.html" %}
 
-<!-- {% block sidebar %}
-{% include "sidebar.html" %}
-{% endblock %}-->
+{% block title %}
+QBDB v3.0
+{% endblock %}
+
+{% block header %}
+<div class='row'>
+  <div class='col-md-12'>
+    {% include "header.html" %}
+  </div>
+</div>
+{% endblock %}
 
 {% block content %}
 
@@ -18,12 +26,14 @@
   <div class="col-md-12 text-center">
     <div class="btn-group">
       <a href="#browse">
-        <button type="button" class="btn btn-primary" id="browse">Browse the DB</button>
+        <button type="button" class="btn btn-primary" id="browse">
+          <i class="fa fa-book fa-fw"></i>&nbsp;Browse the DB</button>
       </a>
     </div>
     <div class="btn-group">
       <a href="#search">
-        <button type="button" class="btn btn-primary" id="search">Search the DB</button>
+        <button type="button" class="btn btn-primary" id="search">
+          <i class='fa fa-search fa-fw'></i>&nbsp;Search the DB</button>
       </a>
     </div>
     <div class="btn-group">
@@ -33,7 +43,7 @@
     </div>
   </div>
 </div>
-
+<span><br><br></span>
 <div class="row">
   <div class="content text-center" id="qbdb-contents">
 

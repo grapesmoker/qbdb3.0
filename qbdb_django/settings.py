@@ -37,6 +37,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'haystack',
     'qbdb'
 )
 
@@ -79,6 +80,15 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
+}
+
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        #'ENGINE': 'haystack.backends.solr_backend.SolrEngine',
+        #'URL': 'http://localhost:8983/solr/qbdb'
+        'ENGINE': 'xapian_backend.XapianEngine',
+        'PATH': os.path.join(os.path.dirname(__file__), 'xapian_index'),
     }
 }
 

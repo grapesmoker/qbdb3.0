@@ -1,0 +1,1 @@
+{{ object.tossup_text_sanitized }}

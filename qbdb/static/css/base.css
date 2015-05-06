@@ -8,3 +8,7 @@ req {
   font-weight: bold;
   text-decoration: underline;
 }
+
+body {
+  font-family: FontAwesome;
+}
