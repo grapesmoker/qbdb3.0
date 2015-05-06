@@ -23,6 +23,7 @@ function(Backbone, $, _, TossupModel, BonusModel,
 
     events: {
       'click #search': 'searchAndRender',
+      'keypress': 'keyHandler',
     },
 
     render: function() {
@@ -31,11 +32,19 @@ function(Backbone, $, _, TossupModel, BonusModel,
       return this;
     },
 
+    keyHandler: function(ev) {
+      if (ev.charCode == 13) {
+        ev.preventDefault()
+        console.log('enter pressed')
+        this.searchAndRender();
+      }
+    },
+
     searchAndRender: function() {
       var that = this
       var data = this.$el.find('#search-form').serializeArray()
       $.get('/search', data, function(result) {
-        console.log(result)
+
 
         var result_el = $('#search-results')
         if (result_el.length) {

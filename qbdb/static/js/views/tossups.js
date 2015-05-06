@@ -10,21 +10,19 @@ define(
      //el: '.tossup-contents',
 
      initialize: function() {
-       //this.collection = collection;
        this.render();
        this.collection.on('reset', this.render, this);
-       /*if (_.isUndefined(options.viewType)) {
-         this.viewType = options.viewType
-       } else { this.viewType  = 'asDiv'}*/
      },
 
      render: function() {
        this.$el.html('');
-       console.log(this.$el)
-       console.log(this.collection)
        this.collection.each(function(tossup) {
          this.renderTossup(tossup);
-       }, this);
+       }, this)
+       if (!this.collection.length) {
+         $('.tossup-contents').remove()
+       }
+       return this
      },
 
      renderTossup: function(tossup) {

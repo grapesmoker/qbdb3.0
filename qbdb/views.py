@@ -3,6 +3,7 @@ from django.template import Context, RequestContext
 from django.http import HttpResponse
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
+from django.db.models import Q
 
 from qbdb.models import Tossup, Bonus, Packet, Tournament
 from haystack.query import SearchQuerySet
@@ -130,73 +131,56 @@ def get_packet(request, id):
 def search(request):
 
     if request.method == 'GET':
-        print request.GET
         q = request.GET.get('q')
         models = request.GET.getlist('models')
         fields = request.GET.getlist('fields')
 
-        results = SearchQuerySet().filter(content=q)
-        results = [r for r in results if r.model_name in models]
-        tu_results = []
-        bs_results = []
-
-        if 'tossup' in models:
-            tu_results = [r for r in results if r.model_name == 'tossup']
-        if 'bonus' in models:
-            bs_results = [r for r in results if r.model_name == 'bonus']
-
-        def none_to_str(x):
-            if x is None:
-                return ''
-            else:
-                return x
-
         if 'question' in fields and 'answer' not in fields:
-            tu_results = [r for r in tu_results if re.search(q, r.tossup_text, re.I) is not None]
-            bs_results = [r for r in bs_results if re.search(q, r.leadin_text, re.I) is not None
-                                                or re.search(q, none_to_str(r.part1_text), re.I) is not None
-                                                or re.search(q, none_to_str(r.part2_text), re.I) is not None
-                                                or re.search(q, none_to_str(r.part3_text), re.I) is not None
-                                                or re.search(q, none_to_str(r.part4_text), re.I) is not None
-                                                or re.search(q, none_to_str(r.part5_text), re.I) is not None
-                                                or re.search(q, none_to_str(r.part6_text), re.I) is not None]
+            if 'tossup' in models:
+                tu_results = SearchQuerySet().filter(Q(tossup_text=q)).models(Tossup)
+            else:
+                tu_results = []
+
+            if 'bonus' in models:
+                bs_results = SearchQuerySet().filter(Q(leadin_text=q) |
+                                                     Q(part1_text=q)  |
+                                                     Q(part2_text=q)  |
+                                                     Q(part3_text=q)  |
+                                                     Q(part4_text=q)  |
+                                                     Q(part5_text=q)  |
+                                                     Q(part6_text=q)).models(Bonus)
+            else:
+                bs_results = []
+
         elif 'answer' in fields and 'question' not in fields:
-            print q
-            tu_results = [r for r in tu_results if re.search(q, r.answer, re.I) is not None]
-            bs_results = [r for r in bs_results if re.search(q, r.leadin_text, re.I) is not None
-                                                or re.search(q, none_to_str(r.part1_answer), re.I) is not None
-                                                or re.search(q, none_to_str(r.part2_answer), re.I) is not None
-                                                or re.search(q, none_to_str(r.part3_answer), re.I) is not None
-                                                or re.search(q, none_to_str(r.part4_answer), re.I) is not None
-                                                or re.search(q, none_to_str(r.part5_answer), re.I) is not None
-                                                or re.search(q, none_to_str(r.part6_answer), re.I) is not None]
+            if 'tossup' in models:
+                tu_results = SearchQuerySet().filter(Q(answer=q)).models(Tossup)
+            else:
+                tu_results = []
+
+            if 'bonus' in models:
+                bs_results = SearchQuerySet().filter(Q(part1_answer=q)  |
+                                                     Q(part2_answer=q)  |
+                                                     Q(part3_answer=q)  |
+                                                     Q(part4_answer=q)  |
+                                                     Q(part5_answer=q)  |
+                                                     Q(part6_answer=q)).models(Bonus)
+            else:
+                bs_results = []
+
         elif 'answer' in fields and 'question' in fields:
-            tu_results = [r for r in tu_results if re.search(q, r.tossup_text, re.I) is not None
-                                                or re.search(q, r.answer, re.I) is not None]
+            if 'tossup' in models:
+                tu_results = SearchQuerySet().filter(content=q).models(Tossup)
+            else:
+                tu_results = []
 
-            bs_results = [r for r in bs_results if re.search(q, none_to_str(r.leadin_text), re.I) is not None
-                                                or re.search(q, none_to_str(r.part1_text), re.I) is not None
-                                                or re.search(q, none_to_str(r.part2_text), re.I) is not None
-                                                or re.search(q, none_to_str(r.part3_text), re.I) is not None
-                                                or re.search(q, none_to_str(r.part4_text), re.I) is not None
-                                                or re.search(q, none_to_str(r.part5_text), re.I) is not None
-                                                or re.search(q, none_to_str(r.part6_text), re.I) is not None
-                                                or re.search(q, none_to_str(r.part1_answer), re.I) is not None
-                                                or re.search(q, none_to_str(r.part2_answer), re.I) is not None
-                                                or re.search(q, none_to_str(r.part3_answer), re.I) is not None
-                                                or re.search(q, none_to_str(r.part4_answer), re.I) is not None
-                                                or re.search(q, none_to_str(r.part5_answer), re.I) is not None
-                                                or re.search(q, none_to_str(r.part6_answer), re.I) is not None]
+            if 'bonus' in models:
+                bs_results = SearchQuerySet().filter(content=q).models(Bonus)
+            else:
+                bs_results = []
 
-        print tu_results
-
-        tossup_ids = [int(r.id.split('.')[-1]) for r in tu_results]
-        bonus_ids = [int(r.id.split('.')[-1]) for r in bs_results]
-
-        tossups = Tossup.objects.filter(id__in=tossup_ids)
-        bonuses = Bonus.objects.filter(id__in=bonus_ids)
-
-        print tossups
+        tossups = [r.object for r in tu_results]
+        bonuses = [r.object for r in bs_results]
 
         return HttpResponse(json.dumps({'tossups': [t.to_dict() for t in tossups],
                                         'bonuses': [b.to_dict() for b in bonuses]}),

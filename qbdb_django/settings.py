@@ -92,6 +92,8 @@ HAYSTACK_CONNECTIONS = {
     }
 }
 
+HAYSTACK_DEFAULT_OPERATOR = 'OR'
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/

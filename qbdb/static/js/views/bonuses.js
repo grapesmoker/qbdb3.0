@@ -10,21 +10,20 @@ define(
      //el: '.bonus-contents',
 
      initialize: function() {
-       //this.collection = collection;
        this.render();
        this.collection.on('reset', this.render, this);
-       /*if (_.isUndefined(options.viewType)) {
-         this.viewType = options.viewType
-       } else { this.viewType  = 'asDiv'}*/
      },
 
      render: function() {
        this.$el.html('');
-       //console.log(this.$el)
-       //console.log(this.collection)
        this.collection.each(function(bonus) {
          this.renderBonus(bonus);
-       }, this);
+       }, this)
+
+       if (!this.collection.length) {
+         $('.bonus-contents').remove()
+       }
+       return this
      },
 
      renderBonus: function(bonus) {
