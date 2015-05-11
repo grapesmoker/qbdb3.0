@@ -23,7 +23,8 @@ function(Backbone, $, _, TossupModel, BonusModel,
 
     events: {
       'click #search': 'searchAndRender',
-      'keypress': 'keyHandler',
+      'keypress #search-term': 'keyHandler',
+      'change #search-term': 'logChange'
     },
 
     render: function() {
@@ -35,9 +36,12 @@ function(Backbone, $, _, TossupModel, BonusModel,
     keyHandler: function(ev) {
       if (ev.charCode == 13) {
         ev.preventDefault()
-        console.log('enter pressed')
         this.searchAndRender();
       }
+    },
+
+    logChange: function() {
+      //console.log('change')
     },
 
     searchAndRender: function() {

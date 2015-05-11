@@ -2,6 +2,7 @@
   <a href='#/packet/<%= packet_id %>'>
     <%= packet_name %>
   </a><br>
+  in<br>
   <a href='#/tournament/<%= tournament_id %>'>
     <%= tournament %>
   </a>
@@ -22,6 +23,54 @@
     <% }) %>
   </p>
 </td>
-<!--<td>&nbsp;</td>
-<td>&nbsp;</td>
-<td>&nbsp;</td>-->
+<td>
+  <%
+  var user_id = $('#user-id').val()
+  if (!_.isUndefined(user_id)) {
+  %>
+    <select
+      class='bonus-difficulty' data-bonus-id="<%= id %>">
+      <option value='0'>None</option>
+      <% for (i = 1; i <= 5; i++) { %>
+          <option value='<%= i %>'
+            <% if (i == my_diff) { %>
+                selected
+            <% } %>>
+            <%= i %>
+            </option>
+      <% } %>
+    </select>&nbsp;
+  <% } %>
+  <span id='bonus-<%= id %>-diff' class='badge alert-success'>
+    <% if (difficulty > 0) { %>
+      <%= difficulty %>
+    <% } else { %>
+      No ratings
+    <% } %>
+  </span>
+</td>
+<td>
+  <%
+  if (!_.isUndefined(user_id)) {
+  %>
+    <select
+      class='bonus-quality' data-bonus-id="<%= id %>">
+      <option value='0'>None</option>
+      <% for (i = 1; i <= 5; i++) { %>
+          <option value='<%= i %>'
+            <% if (i == my_qual) { %>
+                selected
+            <% } %>>
+            <%= i %>
+            </option>
+      <% } %>
+    </select>&nbsp;
+  <% } %>
+  <span id='bonus-<%= id %>-qual' class='badge alert-success'>
+    <% if (quality > 0) { %>
+      <%= quality %>
+    <% } else { %>
+      No ratings
+    <% } %>
+  </span>
+</td>

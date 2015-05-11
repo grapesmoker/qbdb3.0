@@ -15,5 +15,9 @@ urlpatterns = [
     url(r'^tournament/(?P<id>[\d]+)$', get_tournament),
     url(r'^packet/(?P<id>[\d]+)$', get_packet),
     url(r'^search/$', search),
-    url(r'^faq/$', faq)
+    url(r'^faq/$', faq),
+    url(r'^register/$', register),
+    url(r'^logout/$', do_logout),
+    url(r'^login/$', do_login),
+    url(r'^vote/$', vote)
 ]

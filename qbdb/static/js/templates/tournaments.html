@@ -5,21 +5,71 @@
       <tr>
         <th>Year</th>
         <th>Tournament</th>
-        <!--<td>Quality</td>
-        <td>Difficulty</td>-->
+        <th>Difficulty</th>
+        <th>Quality</th>
       </tr>
     </thead>
     <tbody>
       <% _.each(tournaments, function(tournament) { %>
         <tr>
-          <td width='25%'><%= tournament.tournament_year %></td>
+          <td><%= tournament.tournament_year %></td>
           <td class='text-align-left'>
             <a href="#/tournament/<%= tournament.id %>">
               <%= tournament.tournament_name %>
             </a>
           </td>
-          <!--<td><%= tournament.id %></td>
-          <td>&nbsp;</td>-->
+          <td nowrap>
+            <%
+            var user_id = $('#user-id').val()
+            if (!_.isUndefined(user_id)) {
+            %>
+              <select
+                class='tour-difficulty' data-tournament-id="<%= tournament.id %>">
+                <option value='0'>None</option>
+                <% for (i = 1; i <= 5; i++) { %>
+                    <option value='<%= i %>'
+                      <% if (i == tournament.my_diff) { %>
+                          selected
+                      <% } %>>
+                      <%= i %>
+                      </option>
+                <% } %>
+              </select>&nbsp;
+            <% } %>
+            <span id='tournament-<%= tournament.id %>-diff' class='badge alert-success'>
+              <% if (tournament.difficulty > 0) { %>
+                <%= tournament.difficulty %>
+              <% } else { %>
+                No ratings
+              <% } %>
+            </span>
+          </td>
+          <td nowrap>
+            <%
+            var user_id = $('#user-id').val()
+            if (!_.isUndefined(user_id)) {
+            %>
+              <select
+                class='tour-quality' data-tournament-id="<%= tournament.id %>">
+                <option value='0'>None</option>
+                <% for (i = 1; i <= 5; i++) { %>
+                    <option value='<%= i %>'
+                      <% if (i == tournament.my_qual) { %>
+                          selected
+                      <% } %>>
+                      <%= i %>
+                      </option>
+                <% } %>
+              </select>&nbsp;
+            <% } %>
+            <span id='tournament-<%= tournament.id %>-qual' class='badge alert-success'>
+              <% if (tournament.quality > 0) { %>
+                <%= tournament.quality %>
+              <% } else { %>
+                No ratings
+              <% } %>
+            </span>
+          </td>
         </tr>
       <% }); %>
     </tbody>

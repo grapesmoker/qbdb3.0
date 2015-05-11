@@ -10,6 +10,7 @@ require.config({
   paths: {
     jquery: '../jquery/dist/jquery',
     jqueryui: '../jquery-ui/jquery-ui',
+    jquerycookie: '../jquery-cookie/jquery.cookie',
     backbone: '../backbone/backbone',
     underscore: '../underscore/underscore',
     bootstrap: '../bootstrap/dist/js/bootstrap',
@@ -30,17 +31,20 @@ require([
   'tossupModel',
   'tossupCollection',
   'tossupCollectionView',
-  'qbdbRouter'
+  'qbdbRouter',
+  'jquerycookie'
 ], function(Backbone, $, _, TossupView, Tossup,
             TossupCollection, TossupCollectionView, QBDBRouter) {
   $(function() {
 
-    console.log('init');
-
-    /*var tu = new Tossup;
-    var tu_collection = new TossupCollection;
-    tu_collection.add(tu)
-    var tu_coll_view = new TossupCollectionView(tu_collection);*/
+    // set up the custom header for csrf tokens
+    var csrf = $.cookie('csrftoken')
+    $.ajaxSetup({
+      headers: {
+        "X-CSRFToken": csrf
+      }
+    });
+    
     var qbdbRouter = new QBDBRouter;
 
   })

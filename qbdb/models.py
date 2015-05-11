@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 import json
 # Create your models here.
@@ -14,20 +15,40 @@ class Tossup(models.Model):
     packet = models.ForeignKey('Packet', null=True)
     tournament = models.ForeignKey('Tournament')
 
-    def to_dict(self):
+    quality = models.FloatField(default=0)
+    difficulty = models.FloatField(default=0)
 
-        return {'tossup_text': self.tossup_text,
+    def to_dict(self, user=None):
+
+        data = {'tossup_text': self.tossup_text,
                 'answer': self.answer,
                 'number': self.number,
                 'id': self.id,
                 'packet_name': self.packet.author,
                 'packet_id': self.packet.id,
                 'tournament': self.tournament.tournament_name,
-                'tournament_id': self.tournament.id}
+                'tournament_id': self.tournament.id,
+                'year': self.tournament.tournament_year,
+                'difficulty': self.difficulty,
+                'quality': self.quality}
 
-    def to_json(self):
+        if user:
+            vote = self.tossupvote_set.filter(user=user).first()
+            if vote:
+                data['my_diff'] = vote.difficulty
+                data['my_qual'] = vote.quality
+            else:
+                data['my_diff'] = 0
+                data['my_qual'] = 0
+        else:
+            data['my_diff'] = 0
+            data['my_qual'] = 0
 
-        return json.dumps(self.to_dict())
+        return data
+
+    def to_json(self, user=None):
+
+        return json.dumps(self.to_dict(user=user))
 
 class Bonus(models.Model):
 
@@ -75,7 +96,10 @@ class Bonus(models.Model):
     packet = models.ForeignKey('Packet', null=True)
     tournament = models.ForeignKey('Tournament')
 
-    def to_dict(self):
+    quality = models.FloatField(default=0)
+    difficulty = models.FloatField(default=0)
+
+    def to_dict(self, user=None):
         data = {'leadin': self.leadin,
                 'id': self.id,
                 'number': self.number,
@@ -83,6 +107,9 @@ class Bonus(models.Model):
                 'packet_id': self.packet.id,
                 'tournament': self.tournament.tournament_name,
                 'tournament_id': self.tournament.id,
+                'year': self.tournament.tournament_year,
+                'difficulty': self.difficulty,
+                'quality': self.quality,
                 'values': [],
                 'parts': [],
                 'answers': []}
@@ -93,10 +120,22 @@ class Bonus(models.Model):
                 field = 'part{0}_{1}'.format(i, f[0])
                 data[f[1]].append(getattr(self, field))
 
+        if user:
+            vote = self.bonusvote_set.filter(user=user).first()
+            if vote:
+                data['my_diff'] = vote.difficulty
+                data['my_qual'] = vote.quality
+            else:
+                data['my_diff'] = 0
+                data['my_qual'] = 0
+        else:
+            data['my_diff'] = 0
+            data['my_qual'] = 0
+
         return data
 
-    def to_json(self):
-        return json.dumps(self.to_dict())
+    def to_json(self, user=None):
+        return json.dumps(self.to_dict(user=user))
 
 
 class Packet(models.Model):
@@ -104,21 +143,33 @@ class Packet(models.Model):
     tournament = models.ForeignKey('Tournament')
     author = models.CharField(max_length=250)
 
-    def to_dict(self, with_questions=False):
+    quality = models.FloatField(default=0)
+    difficulty = models.FloatField(default=0)
+
+    def to_dict(self, with_questions=False, user=None):
         data = {}
         if with_questions:
-            data['tossups'] = [tossup.to_dict() for tossup in self.tossup_set.all()]
-            data['bonuses'] = [bonus.to_dict() for bonus in self.bonus_set.all()]
+            data['tossups'] = [tossup.to_dict(user=user) for tossup in self.tossup_set.all()]
+            data['bonuses'] = [bonus.to_dict(user=user) for bonus in self.bonus_set.all()]
 
         data['author'] = self.author
         data['tournament'] = self.tournament.tournament_name
         data['tournament_id'] = self.tournament.id
         data['id'] = self.id
+        data['year'] = self.tournament.tournament_year
+        data['difficulty'] = self.difficulty
+        data['quality'] = self.quality
+
+        if user:
+            vote = self.packetvote_set.filter(user=user).first()
+            if vote:
+                data['my_diff'] = vote.difficulty
+                data['my_qual'] = vote.quality
 
         return data
 
-    def to_json(self, with_questions=False):
-        return json.dumps(self.to_dict(with_questions))
+    def to_json(self, with_questions=False, user=None):
+        return json.dumps(self.to_dict(with_questions, user))
 
 class Tournament(models.Model):
 
@@ -126,18 +177,75 @@ class Tournament(models.Model):
     tournament_date = models.DateField(null=True)
     tournament_year = models.IntegerField()
 
-    def to_dict(self, with_packets=False):
+    quality = models.FloatField(default=0)
+    difficulty = models.FloatField(default=0)
+
+    def to_dict(self, with_packets=False, user=None):
         data = {}
         if with_packets:
-            packets = [packet.to_dict() for packet in self.packet_set.all()]
+            packets = [packet.to_dict(user=user) for packet in self.packet_set.all()]
             data['packets'] = packets
 
         data['tournament_name'] = self.tournament_name
         data['tournament_year'] = self.tournament_year
         data['id'] = self.id
+        data['difficulty'] = self.difficulty
+        data['quality'] = self.quality
+
+        if user:
+            vote = self.tournamentvote_set.filter(user=user).first()
+            if vote:
+                data['my_diff'] = vote.difficulty
+                data['my_qual'] = vote.quality
 
         return data
 
 
-    def to_json(self, with_packets=False):
-        return json.dumps(self.to_dict(with_packets))
+    def to_json(self, with_packets=False, user=None):
+        return json.dumps(self.to_dict(with_packets, user))
+
+
+class QBDBUser(models.Model):
+
+    user = models.OneToOneField(User)
+
+    affiliation = models.CharField(max_length=250)
+
+    # voting fields for tournament, packet, tossup, and bonus
+
+    tournament = models.ManyToManyField('Tournament', through='TournamentVote')
+    packet = models.ManyToManyField('Packet', through='PacketVote')
+    tossup = models.ManyToManyField('Tossup', through='TossupVote')
+    bonus = models.ManyToManyField('Bonus', through='BonusVote')
+
+    def __str__(self):
+        return '{0!s} {1!s} ({2!s})'.format(self.user.first_name, self.user.last_name, self.user.username)
+
+class TournamentVote(models.Model):
+
+    user = models.ForeignKey(QBDBUser)
+    tournament = models.ForeignKey(Tournament)
+    difficulty = models.FloatField(default=0.0)
+    quality = models.FloatField(default=0.0)
+
+class PacketVote(models.Model):
+
+    user = models.ForeignKey(QBDBUser)
+    packet = models.ForeignKey(Packet)
+    difficulty = models.FloatField(default=0.0)
+    quality = models.FloatField(default=0.0)
+
+
+class TossupVote(models.Model):
+
+    user = models.ForeignKey(QBDBUser)
+    tossup = models.ForeignKey(Tossup)
+    difficulty = models.FloatField(default=0.0)
+    quality = models.FloatField(default=0.0)
+
+class BonusVote(models.Model):
+
+    user = models.ForeignKey(QBDBUser)
+    bonus = models.ForeignKey(Bonus)
+    difficulty = models.FloatField(default=0.0)
+    quality = models.FloatField(default=0.0)

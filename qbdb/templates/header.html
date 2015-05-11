@@ -8,15 +8,29 @@
         </li>
       </ul>
     </div>
-    <!--<div class='collapse navbar-collapse'>
+    <div class='collapse navbar-collapse'>
       <ul class='nav navbar-nav navbar-right'>
+        {% if user %}
+        <input type='hidden' id='user-id' value='{{ user.id }}'>
+        <li>
+          <a href='/profile/{{ user.id}}/'>
+            Logged in as {{ user }}
+          </a>
+        </li>
+        <li>
+          <a href='/logout/'>
+            Log out
+          </a>
+        </li>
+        {% else %}
         <li>
           <a href='/register'>Register</a>
         </li>
         <li>
           <a href='/login'>Log in</a>
         </li>
+        {% endif %}
       </ul>
-    </div>-->
+    </div>
   </div>
 </nav>

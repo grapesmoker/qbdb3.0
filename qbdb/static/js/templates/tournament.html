@@ -19,8 +19,57 @@
               <%= packet.author %>
             </a>
           </td>
-          <td>&nbsp;</td>
-          <td>&nbsp;</td>
+          <td>
+            <%
+            var user_id = $('#user-id').val()
+            if (!_.isUndefined(user_id)) {
+            %>
+              <select
+                class='packet-difficulty' data-packet-id="<%= packet.id %>">
+                <option value='0'>None</option>
+                <% for (i = 1; i <= 5; i++) { %>
+                    <option value='<%= i %>'
+                      <% if (i == packet.my_diff) { %>
+                          selected
+                      <% } %>>
+                      <%= i %>
+                      </option>
+                <% } %>
+              </select>&nbsp;
+            <% } %>
+            <span id='packet-<%= packet.id %>-diff' class='badge alert-success'>
+              <% if (packet.difficulty > 0) { %>
+                <%= packet.difficulty %>
+              <% } else { %>
+                No ratings
+              <% } %>
+            </span>
+          </td>
+          <td>
+            <%
+            if (!_.isUndefined(user_id)) {
+            %>
+              <select
+                class='packet-quality' data-packet-id="<%= packet.id %>">
+                <option value='0'>None</option>
+                <% for (i = 1; i <= 5; i++) { %>
+                    <option value='<%= i %>'
+                      <% if (i == packet.my_qual) { %>
+                          selected
+                      <% } %>>
+                      <%= i %>
+                      </option>
+                <% } %>
+              </select>&nbsp;
+            <% } %>
+            <span id='packet-<%= packet.id %>-qual' class='badge alert-success'>
+              <% if (packet.quality > 0) { %>
+                <%= packet.quality %>
+              <% } else { %>
+                No ratings
+              <% } %>
+            </span>
+          </td>
         </td>
       <% }) %>
     </tbody>
