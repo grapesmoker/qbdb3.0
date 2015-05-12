@@ -1,6 +1,21 @@
-<div id='dialog-message' title="<%= title %>">
-  <p>
-    <i class='fa fa-exclamation-triangle'></i>
-    <%= text %>
-  </p>
+<div class='modal fade'>
+  <div class='modal-dialog' id='dialog-message'>
+    <div class='modal-content'>
+      <div class='modal-header'>
+        <button type="button" class="close" data-dismiss="modal">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h3><%= title %></h3>
+      </div>
+      <div class='modal-body'>
+        <p>
+          <i class='fa fa-exclamation-triangle'></i>
+          <%= text %>
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
 </div>

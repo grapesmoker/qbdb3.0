@@ -10,7 +10,8 @@ define(['backbone',
         'views/packet',
         'views/search',
         'text!templates/dialog.html',
-        'jquerycookie'],
+        'jquerycookie',
+        'bootstrap'],
          function(Backbone, $, $ui, _, Tournament, TournamentView,
            TournamentCollection, TournamentCollectionView, Packet, PacketView,
            SearchView, Dialog) {
@@ -41,14 +42,7 @@ define(['backbone',
               var dialog = _.template(Dialog)({text: 'This feature is not available yet.',
                                                title: 'Unimplemented feature.'})
 
-              $(dialog).dialog({
-                modal: true,
-                buttons: {
-                  Ok: function() {
-                    $(this).dialog('close')
-                  }
-                }
-              })
+              $(dialog).modal('show')
             },
 
             showTournament: function(id) {
