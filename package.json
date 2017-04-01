@@ -1,0 +1,17 @@
+{
+    "name": "qbdb",
+    "version": "0.0.1",
+    "dependencies": {
+	"grunt": "*",
+	"handlebars": "*",
+	"backbone": "*",
+	"bootstrap": "*",
+	"fontawesome": "*",
+	"jquery": "*",
+	"jquery.cookie": "*"
+    },
+    "devDependencies": {
+	"grunt-browserify": "^5.0.0",
+	"grunt-contrib-handlebars": "^1.0.0"
+    }
+}

@@ -1,1 +1,7 @@
 *.pyc
+node_modules/**
+*.sqlite3
+qbdb_django/xapian_index/**
+qbdb_django/local_settings.py
+*.xml
+.idea/**
