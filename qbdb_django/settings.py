@@ -35,6 +35,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'tastypie',
     'haystack',
     'qbdb'
 )
@@ -77,17 +78,20 @@ WSGI_APPLICATION = 'qbdb_django.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME': os.path.join(BASE_DIR, 'qbdb3.sqlite3'),
     }
 }
 
 HAYSTACK_CONNECTIONS = {
+    # 'default': {
+    #     'ENGINE': 'xapian_backend.XapianEngine',
+    #     'PATH': os.path.join(os.path.dirname(__file__), 'xapian_index'),
+    # }
     'default': {
-        #'ENGINE': 'haystack.backends.solr_backend.SolrEngine',
-        #'URL': 'http://localhost:8983/solr/qbdb'
-        'ENGINE': 'xapian_backend.XapianEngine',
-        'PATH': os.path.join(os.path.dirname(__file__), 'xapian_index'),
-    }
+        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
+        'URL': 'http://127.0.0.1:9200/',
+        'INDEX_NAME': 'qbdb',
+    },
 }
 
 HAYSTACK_DEFAULT_OPERATOR = 'OR'
@@ -113,8 +117,10 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'bower_components'),
-    os.path.join(BASE_DIR, 'qbdb', 'static')
+    #os.path.join(BASE_DIR, 'qbdb', 'static'),
+    os.path.join(BASE_DIR, 'node_modules'),
+    os.path.join(BASE_DIR, 'static')
 )
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+#STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+TASTYPIE_DEFAULT_FORMATS = ['json']

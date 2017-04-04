@@ -1,22 +1,18 @@
-define(['backbone',
-        'jquery',
-        'underscore',
-        'models/tossup',
-        'views/tossup',
-        'views/tossups'],
-        function(Backbone, $, _, Tossup, TossupView) {
+var Backbone = require('backbone');
+//var $ = require('jquery');
+var _ = require('underscore');
 
-          var TossupCollection = Backbone.Collection.extend({
-            model: Tossup,
+var TossupModel = require('models/tossup');
 
-            initialize: function() {
-              console.log('init tossup collection')
-            },
+var TossupCollection = Backbone.Collection.extend({
+    model: TossupModel,
+
+    initialize: function (options) {
+        console.log('init tossup collection')
+    }
 
 
-          });
+});
 
-          return TossupCollection;
+module.exports = TossupCollection;
 
-        }
-      );

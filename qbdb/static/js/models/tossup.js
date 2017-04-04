@@ -1,14 +1,12 @@
-define(['backbone', 'jquery', 'underscore'],
-  function(Backbone, $, _) {
-    var Tossup = Backbone.Model.extend({
-      initialize: function() {
+var Backbone = require('backbone');
+//var $ = require('jquery');
+var _ = require('underscore');
 
-      },
-      defaults: {
+var Tossup = Backbone.Model.extend({
+    initialize: function () {
 
-      }
-    });
+    },
+    defaults: {}
+});
 
-    return Tossup;
-  }
-);
+module.exports = Tossup;

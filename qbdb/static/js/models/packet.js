@@ -1,18 +1,16 @@
-define(['backbone', 'jquery', 'underscore'],
-  function(Backbone, $, _) {
-    var Packet = Backbone.Model.extend({
-      initialize: function() {
+var Backbone = require('backbone');
+//var $ = require('jquery');
+var _ = require('underscore');
 
-      },
+var Packet = Backbone.Model.extend({
+    initialize: function () {
 
-      defaults: {
+    },
 
-      },
+    defaults: {},
 
-      urlRoot: '/packet'
+    urlRoot: '/api/v1/packet'
 
-    });
+});
 
-    return Packet;
-  }
-);
+module.exports = Packet;

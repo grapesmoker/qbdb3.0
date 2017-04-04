@@ -8,6 +8,7 @@ from django.contrib.auth import login, logout, authenticate
 from django.core.validators import EmailValidator, ValidationError
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from django.core import serializers
 
 from qbdb.models import *
 from qbdb.utils import put_tournament_into_db
@@ -19,6 +20,7 @@ import os
 import json
 import re
 
+
 def register(request):
 
     if request.method == 'GET':
@@ -27,9 +29,8 @@ def register(request):
         else:
             user = None
 
-        return render_to_response('register.html',
-                {'user': user},
-                context_instance=RequestContext(request))
+        return render(request, 'register.html',
+                {'user': user})
 
     elif request.method == 'POST':
 
@@ -67,17 +68,14 @@ def register(request):
         if last_name is None or last_name.strip() == '':
             errors.append('Enter a last name.')
 
-        if errors != []:
+        if errors:
             user_data = {'username': username,
                          'email': email,
                          'first_name': first_name,
                          'last_name': last_name,
                          'affiliation': affiliation}
 
-            return render_to_response('register.html',
-                                     {'errors': errors,
-                                      'user_data': user_data},
-                                      context_instance=RequestContext(request))
+            return render(request, 'register.html', {'errors': errors, 'user_data': user_data})
 
         else:
             user = User.objects.create_user(username, email, pass1)
@@ -94,9 +92,6 @@ def register(request):
             login(request, user)
 
             return HttpResponseRedirect('/')
-
-        return render_to_response('register.html',
-                context_instance=RequestContext(request))
 
 
 def do_logout(request):
@@ -123,23 +118,18 @@ def do_login(request):
                     return HttpResponseRedirect('/')
                 else:
                     errors.append('Your account has been disabled.')
-                    return render_to_response('login.html',
-                            {'errors': errors},
-                            context_instance=RequestContext(request))
+                    return render(request, 'login.html', {'errors': errors})
+
             else:
                 errors.append('Invalid login.')
-                return render_to_response('login.html',
-                        {'errors': errors},
-                        context_instance=RequestContext(request))
+                return render(request, 'login.html', {'errors': errors})
         else:
             errors.append('What are you doing? You are already logged in!')
-            return render_to_response('login.html',
-                    {'errors': errors},
-                    context_instance=RequestContext(request))
+            return render(request, 'login.html', {'errors': errors})
 
     elif request.method == 'GET':
-        return render_to_response('login.html',
-                context_instance=RequestContext(request))
+        return render_to_response(request, 'login.html')
+
 
 def main(request):
 
@@ -150,9 +140,8 @@ def main(request):
         else:
             user = None
 
-        return render_to_response('main.html',
-            {'user': user},
-            context_instance=RequestContext(request))
+        return render(request, 'main.html',
+            {'user': user})
 
 @csrf_exempt
 def add_tournament(request):
@@ -243,55 +232,77 @@ def search(request):
         models = request.GET.getlist('models')
         fields = request.GET.getlist('fields')
 
+        tu_results = []
+        bs_results = []
+        bp_results = []
+
         if 'question' in fields and 'answer' not in fields:
             if 'tossup' in models:
-                tu_results = SearchQuerySet().filter(Q(tossup_text=q)).models(Tossup)
-            else:
-                tu_results = []
+                tu_results = SearchQuerySet().filter(tossup_text=q).models(Tossup)
 
             if 'bonus' in models:
-                bs_results = SearchQuerySet().filter(Q(leadin_text=q) |
-                                                     Q(part1_text=q)  |
-                                                     Q(part2_text=q)  |
-                                                     Q(part3_text=q)  |
-                                                     Q(part4_text=q)  |
-                                                     Q(part5_text=q)  |
-                                                     Q(part6_text=q)).models(Bonus)
-            else:
-                bs_results = []
+                bs_results = SearchQuerySet().filter(leadin_text=q).models(Bonus)
+                bp_results = SearchQuerySet().filter(part_text=q).models(BonusPart)
 
         elif 'answer' in fields and 'question' not in fields:
             if 'tossup' in models:
-                tu_results = SearchQuerySet().filter(Q(answer=q)).models(Tossup)
-            else:
-                tu_results = []
+                print 'getting tossups for {} with only questions'.format(q)
+                tu_results = SearchQuerySet().filter(tossup_answer=q).models(Tossup)
 
             if 'bonus' in models:
-                bs_results = SearchQuerySet().filter(Q(part1_answer=q)  |
-                                                     Q(part2_answer=q)  |
-                                                     Q(part3_answer=q)  |
-                                                     Q(part4_answer=q)  |
-                                                     Q(part5_answer=q)  |
-                                                     Q(part6_answer=q)).models(Bonus)
-            else:
-                bs_results = []
+                bp_results = SearchQuerySet().filter(bonus_answer=q).models(BonusPart)
 
         elif 'answer' in fields and 'question' in fields:
             if 'tossup' in models:
+                print 'getting tossups for {} with questions and answers'.format(q)
                 tu_results = SearchQuerySet().filter(content=q).models(Tossup)
-            else:
-                tu_results = []
 
             if 'bonus' in models:
+                print 'getting bonuses for {} with questions and answers'.format(q)
                 bs_results = SearchQuerySet().filter(content=q).models(Bonus)
-            else:
-                bs_results = []
+                bp_results = SearchQuerySet().filter(content=q).models(BonusPart)
 
-        tossups = [r.object for r in tu_results]
+        tossups_json = json.loads(serializers.serialize('json', [r.object for r in tu_results]))
+        for tossup in tossups_json:
+            tossup['fields']['tournament_name'] = \
+                Tournament.objects.get(id=tossup['fields']['tournament']).tournament_name
+            tossup['fields']['author'] = Packet.objects.get(id=tossup['fields']['packet']).author
+            tossup['id'] = tossup.pop('pk')
+            tossup['fields']['tour_id'] = tossup['fields'].pop('tournament')
+            tossup['fields']['pack_id'] = tossup['fields'].pop('packet')
+            for key, value in tossup['fields'].items():
+                tossup[key] = value
+            del tossup['fields']
+
+        # print q, tossups_json
+
         bonuses = [r.object for r in bs_results]
 
-        return HttpResponse(json.dumps({'tossups': [t.to_dict() for t in tossups],
-                                        'bonuses': [b.to_dict() for b in bonuses]}),
+        for r in bp_results:
+            if r.object.bonus not in bonuses:
+                bonuses.append(r.object.bonus)
+
+        bonuses_json = json.loads(serializers.serialize('json', bonuses))
+        for bonus in bonuses_json:
+            bonus_parts = BonusPart.objects.filter(bonus__id=bonus['pk'])
+            bpart_json = json.loads(serializers.serialize('json', bonus_parts))
+            for bonus_part in bpart_json:
+                for key, value in bonus_part['fields'].items():
+                    bonus_part[key] = value
+                del bonus_part['fields']
+            bonus['fields']['bonus_parts'] = bpart_json
+            bonus['fields']['tournament_name'] = \
+                Tournament.objects.get(id=bonus['fields']['tournament']).tournament_name
+            bonus['fields']['author'] = Packet.objects.get(id=bonus['fields']['packet']).author
+            bonus['id'] = bonus.pop('pk')
+            bonus['fields']['tour_id'] = bonus['fields'].pop('tournament')
+            bonus['fields']['pack_id'] = bonus['fields'].pop('packet')
+            for key, value in bonus['fields'].items():
+                bonus[key] = value
+            del bonus['fields']
+
+        return HttpResponse(json.dumps({'tossups': tossups_json,
+                                        'bonuses': bonuses_json}),
                             content_type='application/json')
 
 def faq(request):
@@ -303,9 +314,7 @@ def faq(request):
         else:
             user = None
 
-        return render_to_response('faq.html',
-                                 {'user': user},
-                                  context_instance=RequestContext(request))
+        return render_to_response(request, 'faq.html', {'user': user})
 
 @login_required
 def vote(request):

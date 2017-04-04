@@ -1,18 +1,17 @@
-define(['backbone', 'jquery', 'underscore'],
-  function(Backbone, $, _) {
-    var Tournament = Backbone.Model.extend({
-      initialize: function() {
+var Backbone = require('backbone');
+//var $ = require('jquery');
+var _ = require('underscore');
 
-      },
+var Tournament = Backbone.Model.extend({
+    initialize: function () {
 
-      defaults: {
+    },
 
-      },
+    defaults: {},
 
-      urlRoot: '/tournament'
+    urlRoot: '/api/v1/tournament'
 
-    });
+});
 
-    return Tournament;
-  }
-);
+module.exports = Tournament;
+

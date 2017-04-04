@@ -1,70 +1,79 @@
-define(['backbone',
-        'jquery',
-        'jqueryui',
-        'underscore',
-        'models/tournament',
-        'views/tournament',
-        'collections/tournaments',
-        'views/tournaments',
-        'models/packet',
-        'views/packet',
-        'views/search',
-        'text!templates/dialog.html',
-        'jquerycookie',
-        'bootstrap'],
-         function(Backbone, $, $ui, _, Tournament, TournamentView,
-           TournamentCollection, TournamentCollectionView, Packet, PacketView,
-           SearchView, Dialog) {
+var Backbone = require('backbone');
+//var $ = require('jquery');
+//var $ui = require('jqueryui');
+var _ = require('underscore');
+var jst = require('templates/jst');
 
-          var QBDBRouter = Backbone.Router.extend({
-            routes: {
-              'browse': 'browse',
-              'search': 'search',
-              'read': 'read',
-              'tournament/:id': 'showTournament',
-              'packet/:id': 'showPacket',
-            },
+var bs = require('bootstrap');
 
-            browse: function() {
-              var tournaments = new TournamentCollection();
-              var tourView = new TournamentCollectionView(tournaments);
-            },
+var Tournament = require('models/tournament');
+var TournamentView = require('views/tournament');
+var TournamentCollection = require('collections/tournaments');
+var TournamentCollectionView = require('views/tournaments');
 
-            search: function() {
-              var el = $('#qbdb-contents')
-              el.html('')
-              var searchView = new SearchView({el: el})
-              searchView.render()
-              // el.html(searchView.render().el)
-            },
+var Packet = require('models/packet');
+var PacketView = require('views/packet');
 
-            read: function() {
-              var dialog = _.template(Dialog)({text: 'This feature is not available yet.',
-                                               title: 'Unimplemented feature.'})
+var SearchView = require('views/search');
+var Dialog = jst('dialog');
 
-              $(dialog).modal('show')
-            },
 
-            showTournament: function(id) {
-              var tournament = new Tournament;
-              tournament.set('id', id)
-              var tournamentView = new TournamentView({model: tournament});
-            },
+var QBDBRouter = Backbone.Router.extend({
+    routes: {
+        'browse': 'browse',
+        'search': 'search',
+        'read': 'read',
+        'tournament/:id': 'showTournament',
+        'packet/:id': 'showPacket'
+    },
 
-            showPacket: function(id) {
-              var packet = new Packet;
-              packet.set('id', id)
-              var packetView = new PacketView({model: packet})
-            },
+    browse: function () {
+        var tournaments = new TournamentCollection();
+        var tourView = new TournamentCollectionView(tournaments);
+    },
 
-            showTossup: function(id) {
+    search: function () {
+        var el = $('#qbdb-contents');
+        el.html('');
+        var searchView = new SearchView({el: el});
+        searchView.render();
+        // el.html(searchView.render().el)
+    },
 
-            }
+    read: function () {
+        var el = $('#qbdb-contents');
+        el.html('<div class="col-md-offset-2 col-md-8">' +
+            '<p class="bg-warning">' + 'This feature is not available yet.' + '</p></div>');
 
-          });
-
-          Backbone.history.start();
-
-          return QBDBRouter;
-
+        var dialog = Dialog({
+            text: 'This feature is not available yet.',
+            title: 'Unimplemented feature.'
         });
+        
+        $(dialog).modal('show');
+    },
+
+    showTournament: function (id) {
+        console.log('show tournament');
+        var tournament = new Tournament;
+        tournament.set('id', id);
+        var tournamentView = new TournamentView({model: tournament});
+    },
+
+    showPacket: function (id) {
+        console.log('show packet');
+        var packet = new Packet;
+        packet.set('id', id);
+        var packetView = new PacketView({model: packet})
+    },
+
+    showTossup: function (id) {
+
+    }
+
+});
+
+Backbone.history.start();
+
+module.exports = QBDBRouter;
+

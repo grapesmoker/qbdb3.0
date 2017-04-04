@@ -1,0 +1,2 @@
+{{ object.text_sanitized }}
+{{ object.answer_sanitized }}

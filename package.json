@@ -1,17 +1,37 @@
 {
-    "name": "qbdb",
-    "version": "0.0.1",
-    "dependencies": {
-	"grunt": "*",
-	"handlebars": "*",
-	"backbone": "*",
-	"bootstrap": "*",
-	"fontawesome": "*",
-	"jquery": "*",
-	"jquery.cookie": "*"
+  "name": "qbdb",
+  "version": "0.0.1",
+  "dependencies": {
+    "grunt": "*",
+    "handlebars": "*",
+    "backbone": "*",
+    "bootstrap": "*",
+    "font-awesome": "*",
+    "jquery": "*",
+    "jquery.cookie": "*"
+  },
+  "devDependencies": {
+    "browserify-shim": "^3.8.14",
+    "grunt-browserify": "^5.0.0",
+    "grunt-browserify-jst": "^1.0.1",
+    "grunt-contrib-handlebars": "^1.0.0",
+    "grunt-contrib-watch": "^1.0.0",
+    "grunt-template-module": "^0.5.1",
+    "grunt-wooha-jst": "^1.0.3"
+  },
+  "browser": {
+    "jquery": "./node_modules/jquery/dist/jquery.js"
+  },
+  "browserify-shim": {
+    "jquery": {
+      "exports": "jQuery"
     },
-    "devDependencies": {
-	"grunt-browserify": "^5.0.0",
-	"grunt-contrib-handlebars": "^1.0.0"
+    "bootstrap": {
+      "exports": "bootstrap",
+      "depends": ["jquery:jQuery"]
     }
+  },
+  "browserify": {
+    "transform": [ "browserify-shim" ]
+  }
 }

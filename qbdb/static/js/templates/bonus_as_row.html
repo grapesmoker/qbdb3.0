@@ -1,46 +1,47 @@
 <td>
-  <a href='#/packet/<%= packet_id %>'>
-    <%= packet_name %>
-  </a><br>
-  in<br>
-  <a href='#/tournament/<%= tournament_id %>'>
-    <%= tournament %>
-  </a>
+    <a href='#/packet/<%= pack_id %>'>
+        <%= author %>
+    </a><br>
+    in<br>
+    <a href='#/tournament/<%= tour_id %>'>
+        <%= tournament_name %>
+    </a>
 </td>
 <td>
-  <a href='#/bonus/<%= id %>'>
-    <%= number %>
-  </a>
+    <a href='#/bonus/<%= id %>'>
+        <%= number %>
+    </a>
 </td>
 <td>
-  <p class='text-justify'>
-    <%= leadin %><br>
-    <% _.each(_.zip(values, parts, answers), function(bpart) {
-        if (bpart[0] > 0) { %>
-          [<%= bpart[0] %>] <%= bpart[1] %><br>ANSWER: <%= bpart[2] %><br>
-      <% } %>
+    <p class='text-justify'>
+        <%= leadin %><br>
+        <% _.each(bonus_parts, function(bpart) {
+        console.log('bonud parts: ', bpart);
+        if (bpart.value > 0) { %>
+        [<%= bpart.value %>] <%= bpart.text %><br>ANSWER: <%= bpart.answer %><br>
+        <% } %>
 
-    <% }) %>
-  </p>
+        <% }) %>
+    </p>
 </td>
 <td>
-  <%
-  var user_id = $('#user-id').val()
-  if (!_.isUndefined(user_id)) {
-  %>
+    <%
+    var user_id = $('#user-id').val()
+    if (!_.isUndefined(user_id)) {
+    %>
     <select
-      class='bonus-difficulty' data-bonus-id="<%= id %>">
-      <option value='0'>None</option>
-      <% for (i = 1; i <= 5; i++) { %>
-          <option value='<%= i %>'
-            <% if (i == my_diff) { %>
-                selected
-            <% } %>>
-            <%= i %>
-            </option>
-      <% } %>
+            class='bonus-difficulty' data-bonus-id="<%= id %>">
+        <option value='0'>None</option>
+        <% for (i = 1; i <= 5; i++) { %>
+        <option value='<%= i %>'
+        <% if (i == my_diff) { %>
+        selected
+        <% } %>>
+        <%= i %>
+        </option>
+        <% } %>
     </select>&nbsp;
-  <% } %>
+    <% } %>
   <span id='bonus-<%= id %>-diff' class='badge alert-success'>
     <% if (difficulty > 0) { %>
       <%= difficulty %>
@@ -50,22 +51,22 @@
   </span>
 </td>
 <td>
-  <%
-  if (!_.isUndefined(user_id)) {
-  %>
+    <%
+    if (!_.isUndefined(user_id)) {
+    %>
     <select
-      class='bonus-quality' data-bonus-id="<%= id %>">
-      <option value='0'>None</option>
-      <% for (i = 1; i <= 5; i++) { %>
-          <option value='<%= i %>'
-            <% if (i == my_qual) { %>
-                selected
-            <% } %>>
-            <%= i %>
-            </option>
-      <% } %>
+            class='bonus-quality' data-bonus-id="<%= id %>">
+        <option value='0'>None</option>
+        <% for (i = 1; i <= 5; i++) { %>
+        <option value='<%= i %>'
+        <% if (i == my_qual) { %>
+        selected
+        <% } %>>
+        <%= i %>
+        </option>
+        <% } %>
     </select>&nbsp;
-  <% } %>
+    <% } %>
   <span id='bonus-<%= id %>-qual' class='badge alert-success'>
     <% if (quality > 0) { %>
       <%= quality %>

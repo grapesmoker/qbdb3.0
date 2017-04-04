@@ -1,5 +1,6 @@
 from qbdb.models import *
 
+
 def put_tournament_into_db(tour_data):
 
     tour_year = tour_data['year']
@@ -49,14 +50,14 @@ def put_tournament_into_db(tour_data):
             new_bonus.leadin = bonus['leadin']
             new_bonus.leadin_sanitized = bonus['leadin_sanitized']
             new_bonus.number = int(bonus['number'])
-            bonus_data = zip(bonus['parts'], bonus['answers'], bonus['values'], bonus['parts_sanitized'], bonus['answers_sanitized'])
+            new_bonus.save()
+            bonus_data = zip(bonus['parts'], bonus['answers'], bonus['values'],
+                             bonus['parts_sanitized'], bonus['answers_sanitized'])
             for i, bpart in enumerate(bonus_data, start=1):
                 fields = ['text', 'answer', 'value', 'text_sanitized', 'answer_sanitized']
                 fields_and_values = zip(fields, bpart)
+                new_part = BonusPart()
                 for f in fields_and_values:
-                    bonus_field = 'part{0}_{1}'.format(i, f[0])
-                    setattr(new_bonus, bonus_field, f[1])
-
-            new_bonus.save()
-
-    
+                    setattr(new_part, f[0], f[1])
+                new_part.bonus = new_bonus
+                new_part.save()

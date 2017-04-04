@@ -1,22 +1,20 @@
-define(['backbone',
-        'jquery',
-        'underscore',
-        'models/tournament',
-        'views/tournament'],
-        function(Backbone, $, _, Tournament, TournamentView) {
+var Backbone = require('backbone');
+//var $ = require('jquery');
+var _ = require('underscore');
 
-          var TournamentCollection = Backbone.Collection.extend({
-            model: Tournament,
+var Tournament = require('models/tournament');
 
-            initialize: function() {
-              console.log('init tournament collection')  
-            },
 
-            url: '/tournaments'
+var TournamentCollection = Backbone.Collection.extend({
+    model: Tournament,
 
-          });
+    initialize: function () {
+        console.log('init tournament collection')
+    },
 
-          return TournamentCollection;
+    url: '/api/v1/tournament'
 
-        }
-      );
+});
+
+module.exports = TournamentCollection;
+
