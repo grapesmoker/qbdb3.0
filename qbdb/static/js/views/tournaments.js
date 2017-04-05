@@ -28,7 +28,6 @@ var TournamentCollectionView = Backbone.View.extend({
     },
 
     render: function () {
-        console.log(this.collection)
         var that = this;
         this.collection.fetch({
             success: function (collection, response, options) {
@@ -43,7 +42,6 @@ var TournamentCollectionView = Backbone.View.extend({
 
     renderTournament: function (tournament) {
         var tournamentView = new TournamentView({model: tournament});
-        //console.log(this.$el)
         this.$el.append(tournamentView.render().el);
     },
 

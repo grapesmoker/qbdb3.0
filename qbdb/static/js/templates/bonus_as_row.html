@@ -16,7 +16,6 @@
     <p class='text-justify'>
         <%= leadin %><br>
         <% _.each(bonus_parts, function(bpart) {
-        console.log('bonud parts: ', bpart);
         if (bpart.value > 0) { %>
         [<%= bpart.value %>] <%= bpart.text %><br>ANSWER: <%= bpart.answer %><br>
         <% } %>
