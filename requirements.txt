@@ -1,2 +1,3 @@
 django-haystack
 django-tastypie
+elasticsearch

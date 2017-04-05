@@ -33,8 +33,6 @@ var TournamentView = Backbone.View.extend({
         this.model.fetch().done(function () {
             that.$el.html('');
             that.template = TournamentTemplate;
-            console.log(TournamentTemplate);
-            console.log(that.model.attributes);
             that.$el.html(that.template(that.model.attributes));
             return that;
         });

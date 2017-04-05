@@ -50,8 +50,6 @@ var SearchView = Backbone.View.extend({
         var data = this.$el.find('#search-form').serializeArray()
         $.get('/search', data, function (result) {
 
-            console.log(result);
-
             var result_el = $('#search-results')
             if (result_el.length) {
                 result_el.html('')

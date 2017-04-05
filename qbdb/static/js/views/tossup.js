@@ -27,7 +27,6 @@ var TossupView = Backbone.View.extend({
 
     render: function () {
         this.template = TuAsRowTemplate;
-        console.log('tossup model: ', this.model.attributes);
         this.$el.html(this.template(this.model.attributes));
 
         return this;

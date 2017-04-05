@@ -54,14 +54,12 @@ var QBDBRouter = Backbone.Router.extend({
     },
 
     showTournament: function (id) {
-        console.log('show tournament');
         var tournament = new Tournament;
         tournament.set('id', id);
         var tournamentView = new TournamentView({model: tournament});
     },
 
     showPacket: function (id) {
-        console.log('show packet');
         var packet = new Packet;
         packet.set('id', id);
         var packetView = new PacketView({model: packet})

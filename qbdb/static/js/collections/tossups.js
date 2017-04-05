@@ -8,7 +8,7 @@ var TossupCollection = Backbone.Collection.extend({
     model: TossupModel,
 
     initialize: function (options) {
-        console.log('init tossup collection')
+
     }
 
 

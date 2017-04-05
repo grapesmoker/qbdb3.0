@@ -23,7 +23,6 @@ var TournamentCollectionView = Backbone.View.extend({
     initialize: function (collection) {
         _.bindAll(this, 'render', 'renderTournament')
         this.collection = collection;
-        console.log(this.collection)
         this.render();
         this.collection.on('reset', this.render, this);
     },
