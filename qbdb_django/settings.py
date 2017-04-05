@@ -35,6 +35,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_extensions',
     'tastypie',
     'haystack',
     'qbdb'
@@ -124,3 +125,5 @@ STATICFILES_DIRS = (
 
 #STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 TASTYPIE_DEFAULT_FORMATS = ['json']
+
+API_LIMIT_PER_PAGE = 20

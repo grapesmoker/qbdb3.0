@@ -1,3 +1,4 @@
 django-haystack
 django-tastypie
 elasticsearch
+django-extensions

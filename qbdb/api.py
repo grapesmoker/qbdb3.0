@@ -14,6 +14,7 @@ class TournamentResource(ModelResource):
     class Meta:
         queryset = Tournament.objects.all()
         resource_name = 'tournament'
+        limit = 0
 
 
 class PacketResource(ModelResource):
@@ -30,6 +31,7 @@ class PacketResource(ModelResource):
         filtering = {
             'tournament': ALL_WITH_RELATIONS
         }
+        limit = 50
 
 
 class TossupResource(ModelResource):
