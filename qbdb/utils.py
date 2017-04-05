@@ -14,6 +14,8 @@ def put_tournament_into_db(tour_data):
             for tossup in packet.tossup_set.all():
                 tossup.delete()
             for bonus in packet.bonus_set.all():
+                for bonus_part in bonus.bonuspart_set.all():
+                    bonus_part.delete()
                 bonus.delete()
 
             packet.delete()

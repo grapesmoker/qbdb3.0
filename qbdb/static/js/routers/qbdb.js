@@ -49,7 +49,7 @@ var QBDBRouter = Backbone.Router.extend({
             text: 'This feature is not available yet.',
             title: 'Unimplemented feature.'
         });
-        
+
         $(dialog).modal('show');
     },
 
