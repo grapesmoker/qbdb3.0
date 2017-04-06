@@ -27,7 +27,7 @@
     if (!_.isUndefined(user_id)) {
     %>
     <select
-            class='tossup-difficulty' data-tossup-id="<%= id %>">
+            class='form-control tossup-difficulty' data-tossup-id="<%= id %>">
         <option value='0'>None</option>
         <% for (i = 1; i <= 5; i++) { %>
         <option value='<%= i %>'

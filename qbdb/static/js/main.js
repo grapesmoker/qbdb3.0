@@ -10,8 +10,6 @@ var jquerycookie = require('jquery.cookie');
 
 $(function() {
 
-    console.log('foobar');
-
     // set up the custom header for csrf tokens
     var csrf = $.cookie('csrftoken');
     $.ajaxSetup({

@@ -128,7 +128,7 @@ def do_login(request):
             return render(request, 'login.html', {'errors': errors})
 
     elif request.method == 'GET':
-        return render_to_response(request, 'login.html')
+        return render(request, 'login.html')
 
 
 def main(request):
@@ -140,8 +140,7 @@ def main(request):
         else:
             user = None
 
-        return render(request, 'main.html',
-            {'user': user})
+        return render(request, 'main.html', {'user': user})
 
 @csrf_exempt
 def add_tournament(request):

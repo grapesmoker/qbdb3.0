@@ -1,105 +1,112 @@
 {% extends "base.html" %}
 
 {% block title %}
-Registration
+    Registration
 {% endblock %}
 
 {% block header %}
-<div class='row'>
-  <div class='col-md-12'>
-    {% include "header.html" %}
-  </div>
-</div>
+    <div class='row'>
+        <div class='col-md-12'>
+            {% include "header.html" %}
+        </div>
+    </div>
 {% endblock %}
 
 {% block content %}
 
-<div class="row">
-  <div class="col-md-6 col-md-offset-3">
-    <form id="registration-form" class="form-horizontal" method="post" action="/register/">
-      {% csrf_token %}
-      {% if errors %}
-        {% for error in errors %}
-          <div class='col-sm-offset-4 col-sm-6 alert alert-danger'>
-            {{ error }}
-          </div>
-        {% endfor %}
-      {% endif %}
-      <div class="form-group">
-        <label for="first-name" class="col-sm-4 control-label">
-          First name&nbsp;<i class='fa fa-caret-right'style='color:red'></i>
-        </label>
-        <div class="col-sm-6">
-          <input type="text" class="form-control"
-          id="first-name" name="first-name" placeholder="First name"
-          value="{% if user_data %}{{ user_data.first_name }}{% endif %}">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <form id="registration-form" class="form-horizontal" method="post" action="/register/">
+                {% csrf_token %}
+                {% if errors %}
+                    {% for error in errors %}
+                        <div class='col-sm-offset-4 col-sm-6 alert alert-danger'>
+                            {{ error }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                <div class="form-group">
+                    <label for="first-name" class="col-sm-4 control-label">
+                        First name&nbsp;<i class='fa fa-caret-right' style='color:red'></i>
+                    </label>
+
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control"
+                               id="first-name" name="first-name" placeholder="First name"
+                               value="{% if user_data %}{{ user_data.first_name }}{% endif %}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="last-name" class="col-sm-4 control-label">
+                        Last name&nbsp;<i class='fa fa-caret-right' style='color:red'></i>
+                    </label>
+
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control"
+                               id="last-name" name="last-name" placeholder="Last name"
+                               value="{% if user_data %}{{ user_data.last_name }}{% endif %}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="email" class="col-sm-4 control-label">
+                        Email&nbsp;<i class='fa fa-caret-right' style='color:red'></i>
+                    </label>
+
+                    <div class="col-sm-6">
+                        <input type="email" class="form-control"
+                               id="email" name="email" placeholder="email@domain.com"
+                               value="{% if user_data %}{{ user_data.email }}{% endif %}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="affiliation" class="col-sm-4 control-label">
+                        Affiliation (optional)
+                    </label>
+
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control"
+                               id="affiliation" name="affiliation" placeholder="Some Organization"
+                               value="{% if user_data %}{{ user_data.affiliation }}{% endif %}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="username" class="col-sm-4 control-label">
+                        Username&nbsp;<i class='fa fa-caret-right' style='color:red'></i>
+                    </label>
+
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control"
+                               id="username" name="username" placeholder="Username"
+                               value="{% if user_data %}{{ user_data.username }}{% endif %}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="password1" class="col-sm-4 control-label">
+                        Password&nbsp;<i class='fa fa-caret-right' style='color:red'></i>
+                    </label>
+
+                    <div class="col-sm-6">
+                        <input type="password" class="form-control"
+                               id="password1" name="password1" placeholder="Password">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="password2" class="col-sm-4 control-label">
+                        Re-enter password&nbsp;<i class='fa fa-caret-right' style='color:red'></i>
+                    </label>
+
+                    <div class="col-sm-6">
+                        <input type="password" class="form-control"
+                               id="password2" name="password2" placeholder="Re-enter password">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-4 col-sm-6">
+                        <button type="submit" class="btn btn-default">Register</button>
+                    </div>
+                </div>
+            </form>
         </div>
-      </div>
-      <div class="form-group">
-        <label for="last-name" class="col-sm-4 control-label">
-          Last name&nbsp;<i class='fa fa-caret-right'style='color:red'></i>
-        </label>
-        <div class="col-sm-6">
-          <input type="text" class="form-control"
-          id="last-name" name="last-name" placeholder="Last name"
-          value="{% if user_data %}{{ user_data.last_name }}{% endif %}">
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="email" class="col-sm-4 control-label">
-          Email&nbsp;<i class='fa fa-caret-right'style='color:red'></i>
-        </label>
-        <div class="col-sm-6">
-          <input type="email" class="form-control"
-          id="email" name="email" placeholder="email@domain.com"
-          value="{% if user_data %}{{ user_data.email }}{% endif %}">
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="affiliation" class="col-sm-4 control-label">
-          Affiliation (optional)
-        </label>
-        <div class="col-sm-6">
-          <input type="text" class="form-control"
-          id="affiliation" name="affiliation" placeholder="Some Organization"
-          value="{% if user_data %}{{ user_data.affiliation }}{% endif %}">
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="username" class="col-sm-4 control-label">
-          Username&nbsp;<i class='fa fa-caret-right'style='color:red'></i>
-        </label>
-        <div class="col-sm-6">
-          <input type="text" class="form-control"
-          id="username" name="username" placeholder="Username"
-          value="{% if user_data %}{{ user_data.username }}{% endif %}">
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="password1" class="col-sm-4 control-label">
-          Password&nbsp;<i class='fa fa-caret-right'style='color:red'></i>
-        </label>
-        <div class="col-sm-6">
-          <input type="password" class="form-control"
-          id="password1" name="password1" placeholder="Password">
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="password2" class="col-sm-4 control-label">
-          Re-enter password&nbsp;<i class='fa fa-caret-right'style='color:red'></i>
-        </label>
-        <div class="col-sm-6">
-          <input type="password" class="form-control"
-          id="password2" name="password2" placeholder="Re-enter password">
-        </div>
-      </div>
-      <div class="form-group">
-        <div class="col-sm-offset-4 col-sm-6">
-          <button type="submit" class="btn btn-default">Register</button>
-        </div>
-      </div>
-    </form>
-  </div>
-</div>
+    </div>
 
 {% endblock %}
