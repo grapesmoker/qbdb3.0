@@ -1,6 +1,6 @@
 from django.shortcuts import render, render_to_response
 from django.template import Context, RequestContext
-from django.http import HttpResponse, HttpResponseForbidden, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseForbidden, HttpResponseRedirect, JsonResponse
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Q
@@ -19,6 +19,17 @@ from django.conf import settings
 import os
 import json
 import re
+import random
+import requests
+
+# This is sort of stupid, but to select a random question from the db, you need to know the IDs,
+# unless there are no deletions in the table, which there are not. So when we load up, just fetch
+# all the tossup and bonus IDs into a list that we can then check as needed. This means that if you
+# load new data you have to restart the application, but who cares, we need to do that to index
+# anyway, so it's no big deal.
+
+tossup_ids = [tossup.id for tossup in Tossup.objects.all()]
+bonus_ids = [bonus.id for bonus in Bonus.objects.all()]
 
 
 def register(request):
@@ -222,6 +233,47 @@ def get_packet(request, id):
         return HttpResponse(packet.to_json(with_questions=True, user=qbdb_user),
                             content_type='application/json')
 
+
+@csrf_exempt
+def get_random_question(request):
+
+    if request.method == 'GET':
+
+        question_type = request.GET['question_type']
+        if question_type == 'either':
+            coin = random.random()
+            if coin > 0.5:
+                question_type = 'tossup'
+            else:
+                question_type = 'bonus'
+
+        if question_type == 'tossup':
+            random_id = random.choice(tossup_ids)
+            result = Tossup.objects.get(id=random_id)
+        elif question_type == 'bonus':
+            random_id = random.choice(bonus_ids)
+            result = Bonus.objects.get(id=random_id)
+
+        question_json = json.loads(serializers.serialize('json', [result]))[0]
+        question_json['fields']['tournament_name'] = \
+            Tournament.objects.get(id=question_json['fields']['tournament']).tournament_name
+        question_json['fields']['author'] = Packet.objects.get(id=question_json['fields']['packet']).author
+
+        if question_type == 'bonus':
+            bonus_parts = BonusPart.objects.filter(bonus__id=question_json['pk'])
+            bpart_json = json.loads(serializers.serialize('json', bonus_parts))
+            for bonus_part in bpart_json:
+                for key, value in bonus_part['fields'].items():
+                    bonus_part[key] = value
+                del bonus_part['fields']
+            question_json['fields']['bonus_parts'] = bpart_json
+
+        for key, value in question_json['fields'].items():
+            question_json[key] = value
+        del question_json['fields']
+
+        return HttpResponse(json.dumps(question_json),
+                            content_type='application/json')
 
 @csrf_exempt
 def search(request):

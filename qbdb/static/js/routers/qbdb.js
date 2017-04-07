@@ -16,7 +16,9 @@ var PacketView = require('views/packet');
 
 var SearchView = require('views/search');
 var Dialog = jst('dialog');
+var FAQ = jst('faq');
 
+var ReaderView = require('views/reader');
 
 var QBDBRouter = Backbone.Router.extend({
     routes: {
@@ -24,7 +26,8 @@ var QBDBRouter = Backbone.Router.extend({
         'search': 'search',
         'read': 'read',
         'tournament/:id': 'showTournament',
-        'packet/:id': 'showPacket'
+        'packet/:id': 'showPacket',
+        'faq': 'faq'
     },
 
     browse: function () {
@@ -37,20 +40,10 @@ var QBDBRouter = Backbone.Router.extend({
         el.html('');
         var searchView = new SearchView({el: el});
         searchView.render();
-        // el.html(searchView.render().el)
     },
 
     read: function () {
-        var el = $('#qbdb-contents');
-        el.html('<div class="col-md-offset-2 col-md-8">' +
-            '<p class="bg-warning">' + 'This feature is not available yet.' + '</p></div>');
-
-        var dialog = Dialog({
-            text: 'This feature is not available yet.',
-            title: 'Unimplemented feature.'
-        });
-
-        $(dialog).modal('show');
+        var reader = new ReaderView({});
     },
 
     showTournament: function (id) {
@@ -65,8 +58,11 @@ var QBDBRouter = Backbone.Router.extend({
         var packetView = new PacketView({model: packet})
     },
 
-    showTossup: function (id) {
+    faq: function() {
+        console.log('faq');
+        console.log(FAQ());
 
+        $('#qbdb-contents').html(FAQ());
     }
 
 });

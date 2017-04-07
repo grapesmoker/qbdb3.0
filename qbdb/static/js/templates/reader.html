@@ -1,0 +1,83 @@
+<div class='col-sm-offset-2 col-md-8 reader-contents'>
+    <div class='reader-options'>
+        <form class="form-horizontal">
+            <div class="form-group">
+                <label for="read-tournament" class="col-sm-2 control-label">Select tournament:</label>
+
+                <div class="col-sm-10">
+                    <select id="read-tournament" class="form-control">
+                        <option value="0">Any (random)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="read-packet" class="col-sm-2 control-label">Select packet:</label>
+
+                <div class="col-sm-10">
+                    <select id="read-packet" class="form-control">
+                        <option value="0">Any (random)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Question type:</label>
+                <div class="col-sm-10 text-left">
+                    <label class="checkbox-inline control-label">
+                        <input type="checkbox" id="read-tossups" checked="checked">Tossups
+                    </label>
+
+                    <label class="checkbox-inline control-label">
+                        <input type="checkbox" id="read-bonuses" checked="checked">Bonuses
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="read-order-group" class="col-sm-2 control-label">Reading order:</label>
+                <div class="col-sm-10 text-left">
+                    <label class="radio-inline control-label">
+                        <input type="radio" id="read-order"
+                               value="sequential" name="read-order" checked="checked">Read in sequence
+                    </label>
+                    <label class="radio-inline control-label">
+                        <input type="radio" id="read-order" value="random" name="read-order">Read at random
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="read-speed" class="col-sm-2 control-label">Reading speed (higher is faster):</label>
+                <div class="col-sm-1">
+                    <select class="form-control" id="read-speed">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3" selected="selected">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div id="reader-content" class="col-sm-offset-2 col-sm-10">
+        <div id="reader-question-header" class="text-left">
+            <h4>Choose your options and click "Start Reading"</h4>
+        </div>
+        <div class="well text-left" id="reader-question-text">
+
+        </div>
+        <div class="well text-left" id="reader-answer">
+
+        </div>
+        <div class="button-group">
+            <button type="button" class="btn btn-default" id="start-reading">Start Reading</button>
+            <button type="button" class="btn btn-primary" id="buzz">Buzz</button>
+            <button type="button" class="btn btn-default" id="show-answer">Show Answer</button>
+            <button type="button" class="btn btn-default" id="next-bonus-part">Next Bonus Part</button>
+            <button type="button" class="btn btn-default" id="next-question">Next Question</button>
+        </div>
+        <p></p>
+        <div id="reader-question-footer">
+
+        </div>
+    </div>
+</div>

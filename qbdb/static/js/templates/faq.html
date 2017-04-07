@@ -1,0 +1,119 @@
+<div class='col-sm-offset-1 col-md-10 faq-contents'>
+    <div class="jumbotron">
+        <h1>Welcome to QBDB!</h1>
+        <p>We have questions <em>and</em> <req>answers</req></p>
+    </div>
+    <div class="faq text-left">
+        <div class="faq-question">
+            <h3>What is the QBDB?</h3>
+            <p>QBDB stands for "quizbowl database." It is, as you might surmise, a database of publicly available
+            quizbowl questions.</p>
+        </div>
+        <div class="faq-question">
+            <h3>What tournaments are available on QBDB?</h3>
+            <p>QBDB aims to be as complete as possible. In an ideal world, it would contain all publicly available
+            quizbowl tournaments. However, in our actual, imperfect world, the primary focus of this database is
+            on collegiate and open tournaments. In particular, I've focused on tournaments available within the last
+            several years, and am working my way back in time to add older tournaments.</p>
+        </div>
+
+        <div class="faq-question">
+            <h3>Are NAQT questions available here?</h3>
+            <p>NAQT's questions are the intellectual property of NAQT, and will not be posted without their express
+            permission, which I do not have.</p>
+        </div>
+
+        <div class="faq-question">
+            <h3>How is this better than the <a href="http://hsquizbowl.org/db">hsquizbowl database</a>?</h3>
+            <p>The HSQB database achieves a slightly different task; it hosts the files themselves, and indexes
+            stuff like the tournament date and location. The focus of this database is on the ability to browse
+            any available tournament and in particular to search. Unlike the HSQB database, this one is fully
+            searchable by either question type (tossup or bonus) and by either answer text or question text.</p>
+        </div>
+
+        <div class="faq-question">
+            <h3>How do I use it?</h3>
+            <p>QBDB has three options: browse, search, or read questions. To browse, just click the "Browse" button
+            to see what tournaments are available. Then select the tournament you want you'll see the packets available
+            for that set. Click on the packet, and you'll get the full contents, with first tossups and then bonuses.
+            To search, click on the "Search" button. You can select what type of question you want to look at, and
+            whether you want to search answer text or question text (or both). Select your options, hit "Search," and
+            the results will be presented to you in the same format.</p>
+            <p>The reader is a little trickier. The purpose of the reader is to "simulate", insofar as that is possible,
+            the process of having a moderator read you a question. When you click on "Read me a question", you'll be
+            presented with a set of options that allow you to select the tournament you want to read, the packet from
+            that tournament, whether you want tossups and/or bonuses, and the order in which you see the questions.
+            If you select a tournament, the packet selector will be filled with the available packets for that set.
+            You can select a packet, set your options, and click "Start reading" to have the interface start displaying
+            questions to you.</p>
+            <p>If you're being shown a tossup, it will be shown word for word, with the speed specified,
+            as if you were being read the question in practice or competition. You can hit "Buzz" at any time to stop
+            the reader and see if you know the answer. Clicking "Continue" will resume reading. You can reveal the
+            answer at any time by clicking "Show Answer", and you can advance to the next question by clicking
+            "Next Question". If you run out of questions in the packet or tournament, you'll be informed that there are
+            no more questions to be read. You can always repopulate the question bank by clicking "Start Reading" again,
+            with either the same or a different set of options.</p>
+            <p>Note that you do not have to select a tournament or a packet to read. If you select neither of those,
+            the reader will simply fetch a random question (tossup, bonus, or either, as you choose) and display it to
+            you. You can click "Next Question" indefinitely in such a case and the reader will continue fetching random
+            questions to read to you.</p>
+        </div>
+
+        <div class="faq-question">
+            <h3>Does the reader track how you did?</h3>
+            <p>No, the reader is entirely stateless and dumb, except for tracking your options. It's intended as a tool
+            for personal practice, not as a competition. There are no plans to expand the reader in this direction.</p>
+        </div>
+
+        <div class="faq-question">
+            <h3>What's your tech stack?</h3>
+            <p>QBDB is built on a <a href="http://www.djangoproject.org">Django</a> backend that uses
+                <a href="http://www.haystacksearch.com">haystack</a> for search and <a href="http://elastic.co">ElasticSearch</a>
+                for search. The data store is currently SQLite, although at some point I might transition to PostgreSQL.
+                Data is served using the Django Tastypie REST API framework.
+                The frontend was built with <a href="http://backbonejs.org">Backbone</a> and <a href="http://getbootstrap.com">
+                Bootstrap</a> for styling.</p> The whole project is open source and you can find all the code at
+                <a href="http://github.com/grapesmoker/qbdb3.0">my Github</a>.
+        </div>
+
+        <div class="faq-question">
+            <h3>Why 3.0?</h3>
+            <p>The very first iteration of QBDB was written almost a decade ago, in raw PHP with hand-written MySQL
+            queries. At some point I decided that this was an affront to the gods, and rewrote it in Node (mostly
+            because I was trying to learn Node), but I realized that I hated JavaScript and didn't want to write
+            it server-side. This is the third (well, third-point-five, but who's counting) re-engineering of the same
+            basic concept, and Zod willing the last.</p>
+        </div>
+
+        <div class="faq-question">
+            <h3>How does data get into the database?</h3>
+            <p>Packets in <code>docx</code> format are parsed using another program I wrote, the
+                <a href="http://github.com/grapesmoker/packet_parser">packet parser</a>. It transforms a set of packets
+            for a given tournament into a JSON file that is then imported into the database.</p>
+        </div>
+
+        <div class="faq-question">
+            <h3>How can I help with this project?</h3>
+            <p>I'm always happy to have people help. If you're a programmer, feel free to fork the repo and issue a pull
+            request. I also appreciate any help in parsing tournaments, so if you want to grab some set that isn't
+            already available and parse it, go for it. The parser is finicky but will generally tell you if something's
+            broken, so feel free to ask me questions. Issues with either the parser or the site should be reported
+            on Github; please don't email me about them directly.</p>
+        </div>
+
+        <div class="faq-question">
+            <h3>Can I develop against the database?</h3>
+            <p>With some caveats, yes. I run this database as a service to the community on hosting that I pay for;
+            as such, I ask that you respect this and not pull insane amounts of bandwidth from me. I have more than
+            enough to handle regular usage, but if you start making things difficult for me, I will ban your IP. So
+            if you anticipate that you'd like to write something that uses the database and might lead to a substantial
+            increase in bandwidth use, please let me know, and I'm sure we can work something out.</p>
+        </div>
+
+        <div class="faq-question">
+            <h3>How can I get in touch with you?</h3>
+            <p>I can be reached at <a href="mailto:grapesmoker@gmail.com">grapesmoker@gmail.com</a>. Please don't
+            send me error reports, though; make them Github issues instead.</p>
+        </div>
+    </div>
+</div>

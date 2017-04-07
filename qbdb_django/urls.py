@@ -24,6 +24,7 @@ urlpatterns = [
     url(r'^tournaments/$', tournaments),
     url(r'^tournament/(?P<id>[\d]+)$', get_tournament),
     url(r'^packet/(?P<id>[\d]+)$', get_packet),
+    url(r'^random/$', get_random_question),
     url(r'^search/$', search),
     url(r'^faq/$', faq),
     url(r'^register/$', register),

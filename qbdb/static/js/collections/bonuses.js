@@ -9,7 +9,9 @@ var BonusCollection = Backbone.Collection.extend({
 
     initialize: function () {
 
-    }
+    },
+
+    url: '/api/v1/bonus'
 
 });
 

@@ -1,36 +1,36 @@
 <nav class='navbar navbar-default navbar-static-top'>
-  <div class='container-fluid'>
-    <div class='navbar-header'>
-      <a class='navbar-brand' href='/'>QBDB</a>
-      <ul class='nav navbar-nav'>
-        <li>
-          <a href='/faq'>About QBDB</a>
-        </li>
-      </ul>
+    <div class='container-fluid'>
+        <div class='navbar-header'>
+            <a class='navbar-brand' href='/'>QBDB</a>
+            <ul class='nav navbar-nav'>
+                <li>
+                    <a href='/#faq'>About QBDB</a>
+                </li>
+            </ul>
+        </div>
+        <div class='collapse navbar-collapse'>
+            <ul class='nav navbar-nav navbar-right'>
+                {% if user %}
+                    <input type='hidden' id='user-id' value='{{ user.id }}'>
+                    <li>
+                        <a href='/profile/{{ user.id }}/'>
+                            Logged in as {{ user }}
+                        </a>
+                    </li>
+                    <li>
+                        <a href='/logout/'>
+                            Log out
+                        </a>
+                    </li>
+                {% else %}
+                    <li>
+                        <a href='/register'>Register</a>
+                    </li>
+                    <li>
+                        <a href='/login'>Log in</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
     </div>
-    <div class='collapse navbar-collapse'>
-      <ul class='nav navbar-nav navbar-right'>
-        {% if user %}
-        <input type='hidden' id='user-id' value='{{ user.id }}'>
-        <li>
-          <a href='/profile/{{ user.id}}/'>
-            Logged in as {{ user }}
-          </a>
-        </li>
-        <li>
-          <a href='/logout/'>
-            Log out
-          </a>
-        </li>
-        {% else %}
-        <li>
-          <a href='/register'>Register</a>
-        </li>
-        <li>
-          <a href='/login'>Log in</a>
-        </li>
-        {% endif %}
-      </ul>
-    </div>
-  </div>
 </nav>

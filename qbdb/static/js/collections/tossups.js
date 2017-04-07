@@ -9,8 +9,9 @@ var TossupCollection = Backbone.Collection.extend({
 
     initialize: function (options) {
 
-    }
+    },
 
+    url: '/api/v1/tossup'
 
 });
 

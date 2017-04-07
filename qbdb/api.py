@@ -47,6 +47,10 @@ class TossupResource(ModelResource):
     class Meta:
         queryset = Tossup.objects.all()
         resource_name = 'tossup'
+        filtering = {
+            'tournament': ALL_WITH_RELATIONS
+        }
+        limit = 0
 
 
 class BonusResource(ModelResource):
@@ -64,6 +68,10 @@ class BonusResource(ModelResource):
     class Meta:
         queryset = Bonus.objects.all()
         resource_name = 'bonus'
+        filtering = {
+            'tournament': ALL_WITH_RELATIONS
+        }
+        limit = 0
 
 
 class BonusPartResource(ModelResource):
