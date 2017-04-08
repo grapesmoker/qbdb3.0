@@ -42,7 +42,8 @@ var ReaderView = Backbone.View.extend({
         'input #read-packet': 'setCurrentPacket',
         'click #read-tossups': 'changeOptions',
         'click #read-bonuses': 'changeOptions',
-        'click #read-order': 'changeOptions'
+        'click #read-order': 'changeOptions',
+        'input #read-speed': 'changeOptions'
     },
 
     render: function() {
@@ -171,7 +172,8 @@ var ReaderView = Backbone.View.extend({
         if (_.has(that.currentQuestion, 'tossup_text')) {
             question_type = 'tossup';
             question_text.html('');
-            var interval = 1800.0 / this.speed;
+            var interval = 1000.0 - 150.0 * this.speed;
+            console.log(interval);
             var words = that.currentQuestion.tossup_text.split(' ').reverse();
             that.questionBeingRead = true;
             that.readTimer = setInterval(function() {
